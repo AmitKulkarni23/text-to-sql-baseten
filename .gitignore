@@ -33,3 +33,4 @@ eval/data/raw/
 
 # The adapter is copied in from training/checkpoints before each push
 serving/data/
+training/checkpoints-smoke/
