@@ -29,6 +29,7 @@ export function BooktabsTable({
   onSelect,
   rowLabel,
   rowSx,
+  headBg = 'background.default',
 }: {
   n?: number
   caption?: React.ReactNode
@@ -39,6 +40,8 @@ export function BooktabsTable({
   onSelect?: (index: number) => void
   rowLabel?: (index: number) => string
   rowSx?: object[]
+  /** The ground the table sits on, so the pinned head matches it. */
+  headBg?: string
 }): React.JSX.Element {
   return (
     <Box component="figure" sx={{ m: 0 }}>
@@ -79,7 +82,7 @@ export function BooktabsTable({
                     fontWeight: 600,
                     fontSize: SIZE.small,
                     whiteSpace: 'nowrap',
-                    bgcolor: 'background.default',
+                    bgcolor: headBg,
                     boxShadow: theme => `inset 0 -${RULE.light}px 0 ${theme.palette.text.primary}`,
                   }}
                 >

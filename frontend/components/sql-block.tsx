@@ -5,7 +5,7 @@ import Tooltip from '@mui/material/Tooltip'
 import { MONO, RULE, SIZE } from '../theme.ts'
 import { CheckIcon, CopyIcon } from './icons.tsx'
 
-/** The generated SQL, the thing being judged: monospace on a faint ground, with copy. */
+/** The generated SQL, the thing being judged: a monospace listing between thin ink rules, with copy. */
 export function SqlBlock({ sql }: { sql: string }): React.JSX.Element {
   const [copied, setCopied] = useState(false)
   const copy = (): void => {

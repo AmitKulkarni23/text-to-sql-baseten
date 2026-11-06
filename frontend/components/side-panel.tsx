@@ -18,6 +18,7 @@ export function EvalTable(): React.JSX.Element {
     <Box>
       <BooktabsTable
         n={1}
+        headBg="background.paper"
         caption={`Execution accuracy on ${EVAL_N} held-out questions, and median latency.`}
         columns={[{ label: 'Model' }, { label: 'Acc. %', align: 'right' }, { label: 'P50', align: 'right' }]}
         rows={EVAL_ROWS.map(r => [
