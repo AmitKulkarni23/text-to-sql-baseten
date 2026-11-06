@@ -43,7 +43,7 @@ export const theme = createTheme({
         primary: { main: '#15171B', contrastText: '#FFFFFF' },
         error: { main: '#B42318' },
         warning: { main: '#9A5B00' },
-        action: { hover: 'rgba(21, 23, 27, 0.045)', selected: 'rgba(31, 119, 180, 0.10)' },
+        action: { hover: 'rgba(21, 23, 27, 0.045)', selected: 'rgba(21, 23, 27, 0.08)' },
       },
     },
     dark: {
@@ -54,7 +54,7 @@ export const theme = createTheme({
         primary: { main: '#ECEEF1', contrastText: '#16181C' },
         error: { main: '#F97066' },
         warning: { main: '#F5B547' },
-        action: { hover: 'rgba(236, 238, 241, 0.06)', selected: 'rgba(31, 119, 180, 0.22)' },
+        action: { hover: 'rgba(236, 238, 241, 0.06)', selected: 'rgba(236, 238, 241, 0.10)' },
       },
     },
   },
@@ -73,10 +73,10 @@ export const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: { fontVariantNumeric: 'tabular-nums' },
-        '::selection': { background: 'rgba(31, 119, 180, 0.28)' },
-        'textarea, input': { caretColor: MODEL_COLOR.tuned },
+        '::selection': { background: 'rgba(120, 128, 140, 0.32)' },
+        'textarea, input': { caretColor: 'currentColor' },
         '*': { scrollbarWidth: 'thin' },
-        ':focus-visible': { outline: `2px solid ${MODEL_COLOR.tuned}`, outlineOffset: 2 },
+        ':focus-visible': { outline: '2px solid var(--mui-palette-text-primary)', outlineOffset: 2 },
         '@media (prefers-reduced-motion: reduce)': {
           '*, *::before, *::after': { animationDuration: '0.01ms !important', transitionDuration: '0.01ms !important' },
         },

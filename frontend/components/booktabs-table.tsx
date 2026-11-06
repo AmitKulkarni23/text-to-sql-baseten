@@ -28,6 +28,7 @@ export function BooktabsTable({
   selected,
   onSelect,
   rowLabel,
+  rowSx,
 }: {
   n?: number
   caption?: React.ReactNode
@@ -37,6 +38,7 @@ export function BooktabsTable({
   selected?: number
   onSelect?: (index: number) => void
   rowLabel?: (index: number) => string
+  rowSx?: object[]
 }): React.JSX.Element {
   return (
     <Box component="figure" sx={{ m: 0 }}>
@@ -97,7 +99,7 @@ export function BooktabsTable({
                 tabIndex={onSelect ? 0 : undefined}
                 aria-selected={onSelect ? selected === i : undefined}
                 aria-label={rowLabel?.(i)}
-                sx={{ cursor: onSelect ? 'pointer' : undefined, '&:first-of-type td': { pt: 1 } }}
+                sx={{ height: 32, cursor: onSelect ? 'pointer' : undefined, ...rowSx?.[i] }}
               >
                 {row.map((value, j) => (
                   <TableCell key={j} align={columns[j]?.align} sx={{ ...cell, whiteSpace: 'nowrap' }}>

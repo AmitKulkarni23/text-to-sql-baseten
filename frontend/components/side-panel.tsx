@@ -12,7 +12,7 @@ import { ModelName } from './model-dot.tsx'
 const maxP50 = Math.max(...EVAL_ROWS.map(r => r.p50))
 
 /** Table 1: the held-out results that the rest of the page lets you check by hand. */
-function EvalTable(): React.JSX.Element {
+export function EvalTable(): React.JSX.Element {
   const best = Math.max(...EVAL_ROWS.map(r => r.accuracy))
   return (
     <Box>
@@ -83,10 +83,12 @@ function Schema({ db }: { db: DbInfo }): React.JSX.Element {
 }
 
 /** Left column on wide screens; above the thread on narrow ones. */
-export function SidePanel({ db }: { db?: DbInfo }): React.JSX.Element {
+export function SidePanel({ db, hideEvalOnMobile = false }: { db?: DbInfo; hideEvalOnMobile?: boolean }): React.JSX.Element {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3.5 }}>
-      <EvalTable />
+      <Box sx={{ display: hideEvalOnMobile ? { xs: 'none', md: 'block' } : 'block' }}>
+        <EvalTable />
+      </Box>
       {db ? <Schema db={db} /> : null}
       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
         Qwen2.5-Coder-1.5B-Instruct with a LoRA adapter trained on{' '}

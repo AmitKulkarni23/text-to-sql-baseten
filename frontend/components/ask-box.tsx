@@ -60,7 +60,7 @@ export function AskBox({
             submit()
           }
         }}
-        sx={{ px: 1.75, pt: 1.5, pb: 0.5, fontSize: SIZE.body }}
+        sx={{ px: 1.75, pt: 1.5, pb: 0.5, fontSize: SIZE.body, '& textarea::placeholder': { color: 'text.secondary', opacity: 1 } }}
       />
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 1.25, pb: 1.25, pl: 1.75 }}>
         <Typography variant="body2" component="span" sx={{ color: 'text.secondary', flex: 1, minWidth: 0 }}>

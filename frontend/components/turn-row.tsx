@@ -5,6 +5,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { MODEL_LABELS, type Run, sameRows, type Turn } from '../lib/turns.ts'
+import { alpha } from '@mui/material/styles'
 import { COLD_START_HINT_MS, MODEL_COLOR, SERIF, SIZE } from '../theme.ts'
 import { BooktabsTable } from './booktabs-table.tsx'
 import { CompareIcon } from './icons.tsx'
@@ -18,6 +19,11 @@ function cell(value: unknown): string {
 }
 
 const seconds = (ms: number): string => `${(ms / 1000).toFixed(2)} s`
+
+/** Short results show whole; longer ones scroll inside a window of whole rows, so the closing rule never cuts a row. */
+const SCROLL_AFTER = 15
+const VISIBLE_ROWS = 12
+const ROW_HEIGHT = 32
 
 function Pending({ run }: { run: Run }): React.JSX.Element {
   const [slow, setSlow] = useState(false)
@@ -71,11 +77,13 @@ function RunView({ run, n }: { run: Run; n?: number }): React.JSX.Element {
           n={n}
           caption={
             <>
-              Rows returned by <ModelName model={run.model} /> in {seconds(result.latencyMs)}
-              {result.truncated ? `; the first ${result.rows.length} are shown.` : '.'}
+              {result.rows.length}
+              {result.truncated ? '+' : ''} {result.rows.length === 1 ? 'row' : 'rows'} returned by <ModelName model={run.model} /> in{' '}
+              {seconds(result.latencyMs)}
+              {result.rows.length > SCROLL_AFTER ? '; scroll for the rest.' : '.'}
             </>
           }
-          maxHeight={340}
+          maxHeight={result.rows.length > SCROLL_AFTER ? ROW_HEIGHT * (VISIBLE_ROWS + 1) + 8 : undefined}
           columns={result.columns.map((label, i) => ({ label, align: typeof result.rows[0]?.[i] === 'number' ? 'right' : 'left' }))}
           rows={result.rows.map(row => row.map(cell))}
         />
@@ -97,6 +105,7 @@ function Comparison({ turn, n, selected, onSelect }: { turn: Turn; n: number; se
       selected={selected}
       onSelect={onSelect}
       rowLabel={i => `Show the answer from ${MODEL_LABELS[turn.runs[i]?.model ?? 'tuned']}`}
+      rowSx={turn.runs.map(r => ({ '&.Mui-selected, &.Mui-selected:hover': { bgcolor: alpha(MODEL_COLOR[r.model], 0.14) } }))}
       rows={turn.runs.map(r => [
         <ModelName key="m" model={r.model} />,
         r.result ? `${r.result.rows.length}${r.result.truncated ? '+' : ''}` : '—',
@@ -169,7 +178,7 @@ export const TurnRow = memo(function TurnRow({
       </Box>
       <Stack spacing={2.5}>
         {compared ? <Comparison turn={turn} n={n} selected={selected} onSelect={setSelected} /> : null}
-        {run ? <RunView run={run} n={compared ? undefined : n} /> : null}
+        {run ? <RunView run={run} n={compared ? n + 1 : n} /> : null}
       </Stack>
     </Box>
   )

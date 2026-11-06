@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 import type { DbsResponse, ModelChoice } from '../backend/types.ts'
 import { AskBox } from './components/ask-box.tsx'
 import { SendIcon } from './components/icons.tsx'
-import { SidePanel } from './components/side-panel.tsx'
+import { EvalTable, SidePanel } from './components/side-panel.tsx'
 import { TopBar } from './components/top-bar.tsx'
 import { TurnRow } from './components/turn-row.tsx'
 import { useAsk } from './hooks/use-ask.ts'
@@ -48,6 +48,8 @@ export default function App(): React.JSX.Element {
   const db = config && 'dbs' in config ? config.dbs[0] : undefined
   const models = config && 'models' in config ? MODEL_ORDER.filter(m => config.models.includes(m)) : []
   const ready = Boolean(db) && models.length > 0
+  // Table 1 is the eval; every later table is numbered in reading order (a compared query has two).
+  const tableNumbers = turns.reduce<number[]>((acc, t, i) => [...acc, i === 0 ? 2 : (acc[i - 1] ?? 2) + ((turns[i - 1]?.runs.length ?? 1) > 1 ? 2 : 1)], [])
   const ask = (question: string): void => {
     if (db) send({ dbId: db.id, question, model })
   }
@@ -77,16 +79,19 @@ export default function App(): React.JSX.Element {
             overflowY: { md: 'auto' },
           }}
         >
+          <Box sx={{ display: { xs: 'block', md: 'none' }, pt: 1, pb: 2 }}>
+            <EvalTable />
+          </Box>
           <ButtonBase
             onClick={() => setPanelOpen(o => !o)}
             aria-expanded={panelOpen}
             sx={{ display: { xs: 'flex', md: 'none' }, width: '100%', justifyContent: 'space-between', fontSize: SIZE.small, color: 'text.secondary' }}
           >
-            <span>Held-out results and schema</span>
+            <span>Schema and model details</span>
             <span>{panelOpen ? 'Hide' : 'Show'}</span>
           </ButtonBase>
           <Box sx={{ display: { xs: panelOpen ? 'block' : 'none', md: 'block' }, pt: { xs: 2.5, md: 0 } }}>
-            <SidePanel db={db} />
+            <SidePanel db={db} hideEvalOnMobile />
           </Box>
         </Box>
 
@@ -145,7 +150,7 @@ export default function App(): React.JSX.Element {
                   <TurnRow
                     key={t.id}
                     turn={t}
-                    n={i + 2}
+                    n={tableNumbers[i] ?? 2}
                     canCompare={models.some(m => !t.runs.some(r => r.model === m))}
                     onCompare={turn => compare(turn, db.id, models)}
                   />
