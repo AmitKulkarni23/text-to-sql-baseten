@@ -25,7 +25,15 @@ export const SIZE = { small: 13, body: 15, title: 20 } as const
 export const RULE = { heavy: 1.5, light: 0.75 } as const
 
 /** The ink bar across the top, in both schemes. */
-export const BAR = { bg: '#121418', text: '#F4F5F7', textChannel: '244 245 247', muted: '#A3A9B3', line: '#2A2E35' } as const
+export const BAR = {
+  bg: '#121418',
+  text: '#F4F5F7',
+  textChannel: '244 245 247',
+  muted: '#A3A9B3',
+  line: '#2A2E35',
+  wash: 'rgba(255,255,255,0.04)',
+  hover: 'rgba(255,255,255,0.06)',
+} as const
 
 export const BAR_HEIGHT = 56
 export const SIDE_WIDTH = 344

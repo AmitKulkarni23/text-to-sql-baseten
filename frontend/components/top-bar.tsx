@@ -38,7 +38,7 @@ export function TopBar({
             onChange={(_, m: ModelChoice | null) => (m ? onModel(m) : undefined)}
             aria-label="Model that answers"
             // The selected state reads MUI's text-primary variable; inside the ink bar that has to be the bar's own text colour.
-            sx={{ bgcolor: 'rgba(255,255,255,0.04)', '--mui-palette-text-primary': BAR.text, '--mui-palette-text-primaryChannel': BAR.textChannel }}
+            sx={{ bgcolor: BAR.wash, '--mui-palette-text-primary': BAR.text, '--mui-palette-text-primaryChannel': BAR.textChannel }}
           >
             {models.map(m => (
               <ToggleButton
@@ -53,7 +53,7 @@ export function TopBar({
                   textTransform: 'none',
                   gap: 0.75,
                   whiteSpace: 'nowrap',
-                  '&:hover': { bgcolor: 'rgba(255,255,255,0.06)', color: BAR.text },
+                  '&:hover': { bgcolor: BAR.hover, color: BAR.text },
                 }}
               >
                 <Box component="span" aria-hidden sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: MODEL_COLOR[m] }} />
