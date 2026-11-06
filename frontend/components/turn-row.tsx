@@ -5,8 +5,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { MODEL_LABELS, type Run, sameRows, type Turn } from '../lib/turns.ts'
-import { alpha } from '@mui/material/styles'
-import { COLD_START_HINT_MS, MODEL_COLOR, SERIF, SIZE } from '../theme.ts'
+import { COLD_START_HINT_MS, MODEL_CHANNEL, MODEL_COLOR, SERIF, SIZE } from '../theme.ts'
 import { BooktabsTable } from './booktabs-table.tsx'
 import { CompareIcon } from './icons.tsx'
 import { ModelName } from './model-dot.tsx'
@@ -105,7 +104,8 @@ function Comparison({ turn, n, selected, onSelect }: { turn: Turn; n: number; se
       selected={selected}
       onSelect={onSelect}
       rowLabel={i => `Show the answer from ${MODEL_LABELS[turn.runs[i]?.model ?? 'tuned']}`}
-      rowSx={turn.runs.map(r => ({ '&.Mui-selected, &.Mui-selected:hover': { bgcolor: alpha(MODEL_COLOR[r.model], 0.14) } }))}
+      // MUI tints a selected row from the primary channel; point it at the row's model colour.
+      rowSx={turn.runs.map(r => ({ '--mui-palette-primary-mainChannel': MODEL_CHANNEL[r.model], '--mui-palette-action-selectedOpacity': 0.14 }))}
       rows={turn.runs.map(r => [
         <ModelName key="m" model={r.model} />,
         r.result ? `${r.result.rows.length}${r.result.truncated ? '+' : ''}` : '—',

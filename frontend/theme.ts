@@ -9,6 +9,8 @@ import type { ModelChoice } from '../backend/types.ts'
 
 /** matplotlib's default cycle (C0, C1, C2). Used only to identify a model: dots, bars, selection. */
 export const MODEL_COLOR: Record<ModelChoice, string> = { tuned: '#1F77B4', base: '#FF7F0E', frontier: '#2CA02C' }
+/** The same colours as space-separated RGB channels, for MUI's channel variables (selected rows). */
+export const MODEL_CHANNEL: Record<ModelChoice, string> = { tuned: '31 119 180', base: '255 127 14', frontier: '44 160 44' }
 
 /** The journal serif: captions, table heads, the wordmark. STIX Two is what many journals set in. */
 export const SERIF = '"STIX Two Text", "STIX Two", Charter, Cambria, Georgia, serif'
