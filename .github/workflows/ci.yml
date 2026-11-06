@@ -1,0 +1,27 @@
+# Checks formatting and the rules of React hooks, typechecks, tests and builds every push and pull request.
+# Vercel builds previews on its own; this is the gate before merging.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile
+      - run: bun run format:check
+      - run: bun run lint
+      - run: bun run typecheck
+      # Fails if any file drops below the per-file floor in bunfig.toml.
+      - run: bun run test --coverage
+      - run: bun run build
+      # Reports known vulnerabilities but never fails the build; Dependabot opens the fix PRs.
+      - name: Audit dependencies (report only)
+        run: bun audit
+        continue-on-error: true

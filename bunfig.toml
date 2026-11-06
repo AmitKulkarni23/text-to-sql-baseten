@@ -1,0 +1,5 @@
+[test]
+# Bun checks these per file, not overall. A floor that stops coverage dropping; raise it as the code grows.
+coverageThreshold = { lines = 0.6, functions = 0.6 }
+# Test helpers are not product code, so they must not lift the average.
+coveragePathIgnorePatterns = ["**/tests/**"]

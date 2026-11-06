@@ -1,0 +1,30 @@
+node_modules/
+dist/
+.env*
+!.env.example
+.DS_Store
+*.log
+*.tsbuildinfo
+
+# Deploy tooling state
+.vercel/
+
+# Python (training/ runs on Baseten; local venvs only for dry runs)
+.venv/
+__pycache__/
+*.pyc
+
+# Model artifacts never go in Git: checkpoints live in Baseten
+checkpoints/
+*.safetensors
+*.bin
+
+# Generated deploy configs from `baseten train checkpoint deploy --dry-run`
+generated/
+
+# Local tooling
+.claude/settings.local.json
+.playwright-cli/
+PRODUCT.md
+DESIGN.md
+.impeccable/
