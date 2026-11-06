@@ -1,40 +1,88 @@
 import { createTheme } from '@mui/material/styles'
+import type { ModelChoice } from '../backend/types.ts'
 
-/** Code text. A named stack, because a bare `monospace` makes browsers shrink the text. */
+/**
+ * The page is typeset like a results section of an ML paper: white paper, black ink, booktabs rules,
+ * captions in a journal serif, and each model in the colour matplotlib would plot it in.
+ * Every colour and size used by a component lives here.
+ */
+
+/** matplotlib's default cycle (C0, C1, C2). Used only to identify a model: dots, bars, selection. */
+export const MODEL_COLOR: Record<ModelChoice, string> = { tuned: '#1F77B4', base: '#FF7F0E', frontier: '#2CA02C' }
+
+/** The journal serif: captions, table heads, the wordmark. STIX Two is what many journals set in. */
+export const SERIF = '"STIX Two Text", "STIX Two", Charter, Cambria, Georgia, serif'
+export const SANS = 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+/** Code and measured numbers only. A named stack, because a bare `monospace` makes browsers shrink the text. */
 export const MONO = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
 
-/** Width of the reading column; the results table may scroll sideways inside it. */
-export const COLUMN = 880
+/** The only three sizes on the page. */
+export const SIZE = { small: 13, body: 15, title: 20 } as const
+
+/** Booktabs: heavy top and bottom rules, a thin mid rule, never a vertical line. */
+export const RULE = { heavy: 1.5, light: 0.75 } as const
+
+/** The ink bar across the top, in both schemes. */
+export const BAR = { bg: '#121418', text: '#F4F5F7', textChannel: '244 245 247', muted: '#A3A9B3', line: '#2A2E35' } as const
+
+export const BAR_HEIGHT = 56
+export const SIDE_WIDTH = 344
+export const MAIN_MAX = 820
 
 /** After this long a pending answer says the model is probably cold-starting. */
 export const COLD_START_HINT_MS = 8000
 
-/** The one MUI theme: cool neutrals, teal accent, light and dark follow the system. */
 export const theme = createTheme({
   cssVariables: { colorSchemeSelector: 'data-color-scheme' },
   colorSchemes: {
-    dark: {
-      palette: {
-        background: { default: '#0E1113', paper: '#161A1D' },
-        divider: '#262C30',
-        text: { primary: '#E6EAEC', secondary: '#9AA4AA' },
-        primary: { main: '#3CC6B4', contrastText: '#0E1113' },
-      },
-    },
     light: {
       palette: {
-        background: { default: '#F6F8F8', paper: '#FFFFFF' },
-        divider: '#DDE3E5',
-        text: { primary: '#14191B', secondary: '#58636A' },
-        primary: { main: '#0F7F72', contrastText: '#FFFFFF' },
+        background: { default: '#FFFFFF', paper: '#F5F6F8' },
+        divider: '#D9DCE1',
+        text: { primary: '#15171B', secondary: '#555B66' },
+        primary: { main: '#15171B', contrastText: '#FFFFFF' },
+        error: { main: '#B42318' },
+        warning: { main: '#9A5B00' },
+        action: { hover: 'rgba(21, 23, 27, 0.045)', selected: 'rgba(31, 119, 180, 0.10)' },
+      },
+    },
+    dark: {
+      palette: {
+        background: { default: '#16181C', paper: '#1C1F24' },
+        divider: '#30343B',
+        text: { primary: '#ECEEF1', secondary: '#A3A9B3' },
+        primary: { main: '#ECEEF1', contrastText: '#16181C' },
+        error: { main: '#F97066' },
+        warning: { main: '#F5B547' },
+        action: { hover: 'rgba(236, 238, 241, 0.06)', selected: 'rgba(31, 119, 180, 0.22)' },
       },
     },
   },
-  shape: { borderRadius: 10 },
+  shape: { borderRadius: 6 },
   typography: {
-    fontFamily: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    fontFamily: SANS,
     fontSize: 14,
-    body1: { fontSize: 15, lineHeight: 1.5 },
-    caption: { fontSize: 12, lineHeight: 1.4, fontVariantNumeric: 'tabular-nums' },
+    body1: { fontSize: SIZE.body, lineHeight: 1.55 },
+    body2: { fontSize: SIZE.small, lineHeight: 1.5 },
+    caption: { fontSize: SIZE.small, lineHeight: 1.45 },
+    h1: { fontFamily: SERIF, fontSize: SIZE.title, fontWeight: 600, lineHeight: 1.2 },
+    h2: { fontFamily: SERIF, fontSize: SIZE.body, fontWeight: 600, lineHeight: 1.35 },
+    button: { textTransform: 'none', fontWeight: 600, fontSize: SIZE.small },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: { fontVariantNumeric: 'tabular-nums' },
+        '::selection': { background: 'rgba(31, 119, 180, 0.28)' },
+        'textarea, input': { caretColor: MODEL_COLOR.tuned },
+        '*': { scrollbarWidth: 'thin' },
+        ':focus-visible': { outline: `2px solid ${MODEL_COLOR.tuned}`, outlineOffset: 2 },
+        '@media (prefers-reduced-motion: reduce)': {
+          '*, *::before, *::after': { animationDuration: '0.01ms !important', transitionDuration: '0.01ms !important' },
+        },
+      },
+    },
+    MuiButton: { defaultProps: { disableElevation: true }, styleOverrides: { root: { borderRadius: 6, paddingInline: 14 } } },
+    MuiButtonBase: { defaultProps: { disableRipple: true } },
   },
 })

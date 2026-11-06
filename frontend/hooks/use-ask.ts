@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { AskRequest } from '../../backend/types.ts'
+import type { ModelChoice } from '../../backend/types.ts'
 import { ask } from '../lib/api.ts'
-import { addTurn, COLD_START_RETRIES, settleTurn, type Turn } from '../lib/turns.ts'
+import { addRuns, addTurn, COLD_START_RETRIES, type Turn, updateRun } from '../lib/turns.ts'
 
-/** The chat thread: send adds a pending turn and settles it when the API answers. Requests abort on unmount. */
-export function useAsk(): { turns: Turn[]; send: (request: AskRequest) => void; busy: boolean } {
+type Ask = { dbId: string; question: string; model: ModelChoice }
+
+/**
+ * The thread. `send` adds a numbered turn with one run; `compare` adds runs for other models on the same question.
+ * Requests that time out on a cold start retry until the model is up. All requests abort on unmount.
+ */
+export function useAsk(): { turns: Turn[]; send: (request: Ask) => void; compare: (turn: Turn, dbId: string, models: ModelChoice[]) => void } {
   const [turns, setTurns] = useState<Turn[]>([])
   const controllers = useRef(new Set<AbortController>())
   const nextId = useRef(1)
@@ -14,25 +19,18 @@ export function useAsk(): { turns: Turn[]; send: (request: AskRequest) => void; 
     return () => active.forEach(c => c.abort())
   }, [])
 
-  const send = useCallback((request: AskRequest) => {
-    const id = nextId.current++
+  const run = useCallback((id: number, request: Ask) => {
     const controller = new AbortController()
     controllers.current.add(controller)
-    setTurns(prev => addTurn(prev, { id, question: request.question, model: request.model, status: 'pending' }))
     const attempt = async (): Promise<void> => {
       for (let tries = 0; ; tries++) {
         const outcome = await ask(request, controller.signal)
         if (!outcome.ok && outcome.error.code === 'model_timeout' && tries < COLD_START_RETRIES) {
-          // Cold start: the request reached Baseten and woke the GPU; keep asking until it answers.
-          setTurns(prev => settleTurn(prev, id, { waking: true }))
+          setTurns(prev => updateRun(prev, id, request.model, { waking: true }))
           continue
         }
         setTurns(prev =>
-          settleTurn(
-            prev,
-            id,
-            outcome.ok ? { status: 'done', result: outcome.result, error: undefined } : { status: 'error', error: outcome.error, result: undefined },
-          ),
+          updateRun(prev, id, request.model, outcome.ok ? { status: 'done', result: outcome.result } : { status: 'error', error: outcome.error }),
         )
         return
       }
@@ -42,5 +40,23 @@ export function useAsk(): { turns: Turn[]; send: (request: AskRequest) => void; 
       .finally(() => controllers.current.delete(controller))
   }, [])
 
-  return { turns, send, busy: turns.some(t => t.status === 'pending') }
+  const send = useCallback(
+    (request: Ask) => {
+      const id = nextId.current++
+      setTurns(prev => addTurn(prev, { id, question: request.question, runs: [{ model: request.model, status: 'pending' }] }))
+      run(id, request)
+    },
+    [run],
+  )
+
+  const compare = useCallback(
+    (turn: Turn, dbId: string, models: ModelChoice[]) => {
+      const missing = models.filter(m => !turn.runs.some(r => r.model === m))
+      setTurns(prev => addRuns(prev, turn.id, missing))
+      missing.forEach(model => run(turn.id, { dbId, question: turn.question, model }))
+    },
+    [run],
+  )
+
+  return { turns, send, compare }
 }
