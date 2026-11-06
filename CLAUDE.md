@@ -8,7 +8,8 @@ Built as the demo project for Amit's Forward Deployed Engineer interview at Base
 
 Baseten bills Amit's account by the minute. These are hard stops:
 
-- **MUST ask and wait for approval in the same turn** before any command that spends money: `baseten train push`, `baseten train checkpoint deploy` (without `--dry-run`), `baseten model push` (without `--watch`), promoting a deployment, changing autoscaling, or an eval run against a paid endpoint. Before asking, state the GPU, the expected minutes, the dollar estimate and how it will be stopped.
+- **Standing approval (2026-11-05):** Amit pre-approved running the whole plan without asking, within his free credits. Retry a failing step up to 3 times, then stop and ask. The guards below still apply, and any spend beyond the credits, or adding a payment method, needs him.
+- Commands that spend money: `baseten train push`, `baseten train checkpoint deploy` (without `--dry-run`), `baseten model push` (without `--watch`), promoting a deployment, changing autoscaling, or an eval run against a paid endpoint. Before asking, state the GPU, the expected minutes, the dollar estimate and how it will be stopped.
 - Every training job MUST set `max_steps` (no open-ended epochs) and run on **1x H100** unless Amit approves more. Run a 50-step smoke job before any full run.
 - After launching a job, tail its logs. If it fails or hangs, stop it at once with `baseten train job stop --job-id <id>`.
 - Every deployment MUST have `min_replica: 0` (scale to zero) and `max_replica: 1`. Never leave a replica pinned up.
@@ -162,7 +163,7 @@ Do not run browser automation (playwright-cli or claude-in-chrome) unless Amit e
 
 - **Tasks**: `docs/task-specs/TASK_INDEX.md` lists every task in order, with scope and acceptance criteria. Work on the first task that is not struck through and whose dependencies are done.
 - **When a task is done**, strike its line through (`~~...~~`) and commit that with the task's last change.
-- Steps marked **asks the user** are hard stops: ask and wait. Every step that spends money is one.
+- Steps marked **asks the user** are covered by the standing approval above unless they would exceed the credits.
 
 ## Git Conventions
 

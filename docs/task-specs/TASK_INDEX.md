@@ -14,13 +14,13 @@ Root `package.json` (Bun 1.4.2, React, MUI, Prettier, ESLint hooks plugin, TypeS
 - [x] CI runs all of them on push and PR.
 - [x] Repo pushed to GitHub (**asks the user** for the repo name and visibility).
 
-### TASK-002: Eval set and scorer · depends on: 001 · $0
+### ~~TASK-002: Eval set and scorer · depends on: 001 · $0~~
 
 Build the fixed held-out set and the scoring logic. Nothing calls a model yet.
 
-- [ ] A one-off script pulls the `test` split of `gretelai/synthetic_text_to_sql` at a pinned revision, keeps the examples whose `sql_context` and gold `sql` run in `bun:sqlite`, and writes 300 of them (fixed seed) to `eval/data/heldout.jsonl` with their `sql_complexity` and `domain`.
-- [ ] `eval/score.ts`: execution match. It runs gold and predicted SQL on a fresh in-memory DB built from the context and compares result sets as multisets (order-insensitive unless the gold has `ORDER BY`). Invalid SQL counts as a miss and records the error.
-- [ ] Tests cover row order, duplicates, NULLs, int vs float, and invalid SQL.
+- [x] `eval/build-heldout.ts` reads the `test` split of `gretelai/synthetic_text_to_sql` at a pinned revision (parquet download; the rows API rate-limits), keeps the examples whose `sql_context` and gold `sql` run in `bun:sqlite`, and writes 300 of them (fixed seed) to `eval/data/heldout.jsonl` with their `sql_complexity` and `domain`.
+- [x] `eval/score.ts`: execution match. It runs gold and predicted SQL on a fresh in-memory DB built from the context and compares result sets as multisets (order-insensitive unless the gold has `ORDER BY`). Invalid SQL counts as a miss and records the error.
+- [x] Tests cover row order, duplicates, NULLs, int vs float, and invalid SQL.
 
 ### TASK-003: Prompt and frontier baseline · depends on: 002 · ~$0.50 of Model APIs credits
 

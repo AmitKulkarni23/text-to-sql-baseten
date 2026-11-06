@@ -1,0 +1,10 @@
+{
+  "dataset": "gretelai/synthetic_text_to_sql",
+  "revision": "740ab236e64503fba51be1101df7a1be83bf455d",
+  "split": "test",
+  "seed": 20261105,
+  "testRows": 5851,
+  "usable": 3395,
+  "count": 300,
+  "built": "2026-11-06"
+}
