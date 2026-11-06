@@ -1,0 +1,6 @@
+training/
+eval/data/
+eval/results/
+docs/
+.claude/
+.env*
