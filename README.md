@@ -13,9 +13,26 @@ Ask a database a question in plain English and get the SQL and its results. A 1.
 | DeepSeek-V4.1-Flash (Baseten Model APIs) | frontier MoE | 67.0% | 952 ms | 1,899 ms | shared Model API |
 | Qwen2.5-Coder-1.5B-Instruct, base | 1.5B | 52.3% | 447 ms | 737 ms | 1x L4, vLLM |
 | + LoRA, 50 steps (smoke run) | 1.5B | 58.7% | 508 ms | 821 ms | 1x L4, vLLM |
-| **+ LoRA, 600 steps (1 epoch, 9.6k examples)** | 1.5B | _pending_ | | | 1x L4, vLLM |
+| **+ LoRA, 600 steps (1 epoch, 9.6k examples)** | 1.5B | **63.3%** | **508 ms** | **779 ms** | 1x L4, vLLM |
 
 Latency is end to end from my laptop, so it includes network time. The frontier model also spends tokens reasoning (64k completion tokens over 300 questions, about 7x the SQL it returned). That costs latency and money for no gain on a task this narrow.
+
+**Reading it.** Fine-tuning added 11 points over the base model and closed most of the gap to the frontier model: 63.3% against 67.0%. That difference is inside the noise of a 300-question set (about ±5 points). The fine-tuned model also answers at half the latency and writes about 8x fewer output tokens (8k against 64k for the same 300 questions), because it doesn't reason before answering. That is the book's claim, roughly holding: on a cleanly scoped task, a 1.5B model on one L4 lands near a frontier MoE at a fraction of the cost per query.
+
+By difficulty, the fine-tuned model **beats the frontier on joins, subqueries and window functions** and trails on simple selects and aggregations:
+
+| SQL complexity | n | Base 1.5B | Fine-tuned 1.5B | DeepSeek-V4.1-Flash |
+|---|---|---|---|---|
+| basic SQL | 158 | 64.6 | 70.9 | **75.9** |
+| aggregation | 79 | 40.5 | 58.2 | **69.6** |
+| single join | 35 | 48.6 | **62.9** | 51.4 |
+| subqueries | 13 | 38.5 | **53.8** | 46.2 |
+| window functions | 9 | 0.0 | **22.2** | 11.1 |
+| multiple joins | 5 | 20.0 | 20.0 | 20.0 |
+
+The small groups (n = 5 to 13) are anecdotes, not findings. Some of the "wins" are the fine-tuned model matching the dataset's labelling style (see below).
+
+Training: 600 steps at an effective batch of 16 (one epoch over 9.6k examples). It took 77 minutes on an M5 MacBook. Loss fell from 0.41 to about 0.22 and was flat for the last third, so more steps on the same data would buy little; more varied data would buy more.
 
 The full results for each run, including every generated query, are in `eval/results/`.
 
@@ -34,12 +51,13 @@ browser (React + MUI, static on Vercel)
 - **Data**: `gretelai/synthetic_text_to_sql` (Apache-2.0) at a pinned revision. Training uses only the train split, filtered to read-only analytics questions (88k usable, 9.6k sampled). The eval set is drawn only from the test split.
 - **Prompt**: the model sees `CREATE TABLE` statements only, never rows. The same prompt is used in training (`training/train.py`), eval and the API (`backend/prompt.ts`), and a check confirms they are identical.
 - **Training**: TRL SFT + PEFT LoRA (r=16, all linear layers), loss on the SQL only. The plan was Baseten Training on 1x H100. My account returned `403 not authorized for Baseten training` (no Training credits, no payment method), so the same script ran unchanged on an M5 MacBook (PyTorch MPS): about 7.5 s per step and under 7 GB of memory after tuning the batch size.
-- **Serving**: a Truss (`serving/config.yaml`) that runs `vllm serve` with `--enable-lora`. One L4 serves both the base model and the adapter, so the A/B comparison costs no extra GPU. Defaults: scale to zero, max 1 replica.
-- **App**: a chat UI. Pick the model and ask a question; you get back the SQL, a results table and the latency. A cold start shows "waking the model up".
+- **Serving**: a Truss (`serving/config.yaml`) that runs `vllm serve` with `--enable-lora`. One L4 serves both the base model and the adapter, so the A/B comparison costs no extra GPU. Base weights are mirrored by Baseten (`weights:`), so a boot doesn't re-download them from Hugging Face. Defaults: scale to zero after 15 idle minutes, max 1 replica.
+- **Cold starts**: the first boot took 6.5 min: 2.3 min container start, 1.5 min weight download (now cached), and 1 min engine warmup plus CUDA graphs. The app wakes the GPU when someone focuses the question box and keeps retrying a question with a "waking the model" notice until the model is up.
+- **App**: typeset like a paper's results section. Each question is a numbered query with its SQL and a captioned results table, and models carry matplotlib's colours. **Compare models** asks the same question of all three and tabulates rows, agreement with the fine-tuned answer, and latency.
 
 ## Cost
 
-See `docs/cost-log.md`. Everything so far ran on free credits: about $0.09 of Model APIs for the frontier baseline and well under $1 of L4 time for serving and evals. Training cost $0 because it ran locally.
+See `docs/cost-log.md`. Everything ran on free credits: about $0.09 of Model APIs for the frontier baseline and roughly $1 to $2 of L4 time for two deployments and four eval runs. Training cost $0 because it ran locally. Serving costs about $0.85/hr while the GPU is awake and nothing while it is scaled to zero.
 
 ## What I'd watch out for (eval honesty)
 
