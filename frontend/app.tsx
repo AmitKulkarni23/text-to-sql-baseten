@@ -28,7 +28,8 @@ export default function App(): React.JSX.Element {
   const [model, setModel] = useState<ModelChoice>('tuned')
   const [panelOpen, setPanelOpen] = useState(false)
   const { turns, send, compare } = useAsk()
-  const end = useRef<HTMLDivElement>(null)
+  const latest = useRef<HTMLDivElement>(null)
+  const lastTurn = turns[turns.length - 1]
 
   useEffect(() => {
     const controller = new AbortController()
@@ -44,9 +45,10 @@ export default function App(): React.JSX.Element {
     return () => controller.abort()
   }, [])
 
+  // Runs on every update of the newest turn (asked, answered, compared), so its answer scrolls into view.
   useEffect(() => {
-    end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-  }, [turns.length])
+    latest.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [lastTurn])
 
   const db = config && 'dbs' in config ? config.dbs[0] : undefined
   const models = config && 'models' in config ? MODEL_ORDER.filter(m => config.models.includes(m)) : []
@@ -150,15 +152,15 @@ export default function App(): React.JSX.Element {
             ) : (
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {turns.map((t, i) => (
-                  <TurnRow
-                    key={t.id}
-                    turn={t}
-                    n={tableNumbers[i] ?? 2}
-                    canCompare={models.some(m => !t.runs.some(r => r.model === m))}
-                    onCompare={turn => compare(turn, db.id, models)}
-                  />
+                  <Box key={t.id} ref={t === lastTurn ? latest : undefined} sx={{ scrollMarginTop: BAR_HEIGHT + 16 }}>
+                    <TurnRow
+                      turn={t}
+                      n={tableNumbers[i] ?? 2}
+                      canCompare={models.some(m => !t.runs.some(r => r.model === m))}
+                      onCompare={turn => compare(turn, db.id, models)}
+                    />
+                  </Box>
                 ))}
-                <div ref={end} />
               </Box>
             )}
           </Box>
