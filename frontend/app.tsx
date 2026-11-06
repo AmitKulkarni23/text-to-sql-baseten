@@ -43,7 +43,9 @@ export default function App(): React.JSX.Element {
     return () => controller.abort()
   }, [])
 
-  useEffect(() => end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }), [turns.length])
+  useEffect(() => {
+    end.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [turns.length])
 
   const db = config && 'dbs' in config ? config.dbs[0] : undefined
   const models = config && 'models' in config ? MODEL_ORDER.filter(m => config.models.includes(m)) : []
