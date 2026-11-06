@@ -1,0 +1,21 @@
+# Baseten deployment: vLLM serving the base model and the text-to-SQL LoRA adapter from one GPU.
+# The request's `model` field picks the adapter ("text-to-sql") or the base model ("Qwen/Qwen2.5-Coder-1.5B-Instruct").
+# The adapter (PEFT format, from training/train.py) goes in serving/data/text-to-sql/ before pushing; Truss copies data/ to /app/data.
+#   baseten model push --dir serving --min-replica 0 --max-replica 1 --concurrency-target 32 --scale-down-delay 300
+model_name: text-to-sql
+base_image:
+  image: vllm/vllm-openai:v0.29.0
+docker_server:
+  start_command: vllm serve Qwen/Qwen2.5-Coder-1.5B-Instruct --served-model-name Qwen/Qwen2.5-Coder-1.5B-Instruct --host 0.0.0.0 --port 8000 --max-model-len 4096 --enable-lora --max-lora-rank 16 --lora-modules text-to-sql=/app/data/text-to-sql
+  readiness_endpoint: /health
+  liveness_endpoint: /health
+  predict_endpoint: /v1/chat/completions
+  server_port: 8000
+resources:
+  accelerator: L4
+  use_gpu: true
+runtime:
+  predict_concurrency: 32
+  health_checks:
+    restart_threshold_seconds: 600
+    stop_traffic_threshold_seconds: 300

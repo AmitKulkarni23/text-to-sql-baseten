@@ -35,8 +35,8 @@ Vercel Function api/ask.ts → backend/ (Bun + TypeScript)
 ```
 
 - **Training, Plan A** (`training/`, Python, runs on Baseten): TRL `SFTTrainer` + PEFT LoRA on `gretelai/synthetic_text_to_sql` (Apache-2.0, ~100k examples, each with `CREATE TABLE` + `INSERT` context, so queries can be executed). Checkpoints are written to `$BT_CHECKPOINT_DIR`, and Baseten syncs them.
-- **Training, Plan B** (`training/mlx/`, runs on Amit's Mac: M5, 32 GB): if Baseten Training can't run without a payment method, fine-tune the same model on the same data with `mlx_lm.lora`, fuse the adapter, upload the merged model to a private Hugging Face repo and deploy that repo on Baseten (Dedicated credits). Training is free; only serving costs.
-- **Serving**: the LoRA checkpoint is deployed with `baseten train checkpoint deploy` (served by vLLM, OpenAI-compatible). The served model name is the checkpoint name (e.g. `checkpoint-500`).
+- **Training, Plan B (in use)**: Baseten returns 403 "not authorized for Baseten training" on this account (no Training credits, no payment method). The same `training/train.py` runs on Amit's Mac (M5, 32 GB, PyTorch MPS) with no code changes. It writes a PEFT LoRA adapter to `training/checkpoints/` (gitignored). Training is free; only serving costs.
+- **Serving** (`serving/config.yaml`): a Truss running vLLM on 1x L4 that serves the base model and the LoRA adapter (bundled in `serving/data/text-to-sql/`) from one GPU. The request's `model` field picks `text-to-sql` (fine-tuned) or `Qwen/Qwen2.5-Coder-1.5B-Instruct` (base), so the base-vs-tuned comparison costs no extra GPU. Push with `baseten model push --dir serving --min-replica 0 --max-replica 1 --concurrency-target 32 --scale-down-delay 300`. (With Training access, `baseten train checkpoint deploy` would replace this.)
 - **Eval** (`eval/`, TypeScript): **execution accuracy** on a fixed held-out set. Run the gold SQL and the generated SQL on the example's own context in SQLite and compare result sets. Report the fine-tuned model, the base model and a large Model APIs model side by side, with P50/P90 latency. Same set, same prompt, every time.
 - **Sample databases** (`backend/db/`): Chinook (MIT license) plus any added later, opened read-only.
 
@@ -46,7 +46,7 @@ Vercel Function api/ask.ts → backend/ (Bun + TypeScript)
 - **Frontend**: React + Material UI, bundled by Bun (`bun build frontend/index.html`). No Vite, no Next.js. Hosted on Vercel as static files.
 - **Backend**: Vercel Functions (`api/`), thin wrappers over plain TypeScript modules in `backend/`. Calls Baseten with `fetch`; no OpenAI SDK needed. Locally, `backend/dev.ts` runs `Bun.serve` with the same handlers and serves the frontend, so `vercel dev` isn't needed.
 - **Model**: `Qwen/Qwen2.5-Coder-1.5B-Instruct` (Apache-2.0) + LoRA (r=16). It is the smallest model that can plausibly pass and is cheap to train and serve. Move to 3B only if evals say so.
-- **Infrastructure as Code**: Vercel in `vercel.json` (build, output, function settings, included DB files), Baseten in `training/config.py` and `training/deploy_checkpoints.py`. No ClickOps after first setup; env var names are listed below and in `.env.example`.
+- **Infrastructure as Code**: Vercel in `vercel.json` (build, output, function settings, included DB files), Baseten in `training/config.py` (training job) and `serving/config.yaml` (deployment; autoscaling flags in the push command). No ClickOps after first setup; env var names are listed below and in `.env.example`.
 
 ## Folder Structure
 
@@ -57,10 +57,10 @@ TextToSQL/
 ├── api/                    # Vercel Functions: thin wrappers (ask.ts, dbs.ts, health.ts) over backend/
 ├── training/               # runs on Baseten, never locally on a GPU
 │   ├── config.py           # TrainingProject: image, 1x H100, secrets, checkpointing
-│   ├── run.sh              # start command: pip install, python train.py
 │   ├── train.py            # TRL SFT + LoRA; builds prompts exactly like backend/prompt.ts
-│   ├── deploy_checkpoints.py # DeployCheckpointsConfig: base model, LoRA rank, GPU
-│   └── mlx/                # Plan B: local MLX fine-tune on the Mac (only if Plan A is blocked)
+│   └── run.sh              # Baseten start command (Plan A)
+├── serving/                # Baseten Truss: vLLM + LoRA adapter (data/ is gitignored, copied from training/checkpoints)
+│   └── config.yaml
 ├── backend/
 │   ├── handlers.ts         # ask, dbs, health: Request → Response, dependencies passed in
 │   ├── dev.ts              # local only: Bun.serve with the handlers + the frontend
@@ -105,7 +105,7 @@ Backend (Vercel project env vars, set with `vercel env add`; secrets never in Gi
 
 - `BASETEN_API_KEY`: secret. Start with a Personal key for development. For production, use a **Team key restricted to the TextToSQL model** (least privilege).
 - `BASETEN_MODEL_ID`: the fine-tuned deployment's model ID (`model-<id>.api.baseten.co`).
-- `BASETEN_SERVED_MODEL`: the checkpoint name the deployment serves (e.g. `checkpoint-500`).
+- `BASETEN_SERVED_MODEL`: the adapter name the deployment serves: `text-to-sql`.
 - `FRONTIER_MODEL`: the Model APIs model slug used for comparison (optional; off when unset).
 - `DAILY_MODEL_CALLS`: cap on Baseten calls per day per function instance (default 500). Past it, `/api/ask` returns 429.
 
@@ -131,8 +131,9 @@ baseten train push --config training/config.py
 baseten train job logs --job-id <id> --tail
 baseten train job stop --job-id <id>
 baseten train checkpoint list --job-id <id>
-baseten train checkpoint deploy --config training/deploy_checkpoints.py --dry-run --config-out-dir ./generated
-baseten train checkpoint deploy --config training/deploy_checkpoints.py
+# Plan B (in use): train locally, serve on Baseten
+SMOKE=1 uv run --no-project --python 3.12 --with torch --with trl==0.24.0 --with peft==0.17.1 --with transformers==4.57.1 --with datasets==4.2.0 --with accelerate==1.10.1 python training/train.py
+baseten model push --dir serving --min-replica 0 --max-replica 1 --concurrency-target 32 --scale-down-delay 300
 ```
 
 ```bash

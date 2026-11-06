@@ -20,8 +20,8 @@ REVISION = "740ab236e64503fba51be1101df7a1be83bf455d"  # same pin as eval/build-
 SEED = 20261105
 LORA_RANK = 16  # deploy_checkpoints.py must use the same rank
 SMOKE = os.environ.get("SMOKE") == "1"
-TRAIN_EXAMPLES = 500 if SMOKE else 20_000
-MAX_STEPS = 50 if SMOKE else 1_250  # 20k examples / 16 per step = 1 epoch
+TRAIN_EXAMPLES = 500 if SMOKE else 9_600
+MAX_STEPS = 50 if SMOKE else 600  # 9.6k examples / 16 per step = 1 epoch (~85 min on an M5 at ~8.5 s/step)
 
 
 def schema_only(context: str) -> str:
@@ -52,15 +52,17 @@ data = data.map(to_example, remove_columns=data.column_names)
 args = SFTConfig(
     output_dir=os.getenv("BT_CHECKPOINT_DIR", "./checkpoints"),
     max_steps=MAX_STEPS,
-    per_device_train_batch_size=8,
-    gradient_accumulation_steps=2,
+    per_device_train_batch_size=2,  # effective batch 16; small micro-batches keep a 32 GB Mac out of swap
+    gradient_accumulation_steps=8,
+    gradient_checkpointing=True,
+    model_init_kwargs={"torch_dtype": "bfloat16"},
     learning_rate=2e-4,
     lr_scheduler_type="cosine",
     warmup_ratio=0.03,
-    max_length=1024,
+    max_length=512,  # schema + question + SQL; longer examples are truncated
     bf16=True,
     logging_steps=10,
-    save_steps=25 if SMOKE else 250,
+    save_steps=25 if SMOKE else 150,
     seed=SEED,
     report_to="none",
 )

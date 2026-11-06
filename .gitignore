@@ -30,3 +30,6 @@ DESIGN.md
 .impeccable/
 eval/data/raw/
 .vercel
+
+# The adapter is copied in from training/checkpoints before each push
+serving/data/
