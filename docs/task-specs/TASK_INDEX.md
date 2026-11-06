@@ -6,13 +6,13 @@ Cost estimates are ranges from list prices and are unverified until the smoke ru
 
 ---
 
-### TASK-001: Scaffold and CI · depends on: none · $0
+### ~~TASK-001: Scaffold and CI · depends on: none · $0~~
 
 Root `package.json` (Bun 1.4.2, React, MUI, Prettier, ESLint hooks plugin, TypeScript, happy-dom, Testing Library: the same versions as DiscordRelay), `tsconfig.json`, `eslint.config.js`, `bunfig.toml` with a coverage floor, `.env.example`, `.github/workflows/ci.yml` and `.github/dependabot.yml` modeled on DiscordRelay.
 
-- [ ] `bun install`, `format:check`, `lint`, `typecheck` and `bun test` pass on an empty project.
-- [ ] CI runs all of them on push and PR.
-- [ ] Repo pushed to GitHub (**asks the user** for the repo name and visibility).
+- [x] `bun install`, `format:check`, `lint`, `typecheck` and `bun test` pass on an empty project.
+- [x] CI runs all of them on push and PR.
+- [x] Repo pushed to GitHub (**asks the user** for the repo name and visibility).
 
 ### TASK-002: Eval set and scorer · depends on: 001 · $0
 
