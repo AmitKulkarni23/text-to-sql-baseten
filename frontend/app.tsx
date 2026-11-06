@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import ButtonBase from '@mui/material/ButtonBase'
+import Chip from '@mui/material/Chip'
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
 import type { DbsResponse, ModelChoice } from '../backend/types.ts'
@@ -164,6 +165,13 @@ export default function App(): React.JSX.Element {
 
           <Box sx={{ position: 'sticky', bottom: 0, bgcolor: 'background.default', borderTop: 1, borderColor: 'divider', px: { xs: 2, sm: 3 }, py: 1.5 }}>
             <Box sx={{ maxWidth: MAIN_MAX, mx: 'auto' }}>
+              {turns.length > 0 ? (
+                <Box aria-label="Try one" sx={{ display: 'flex', gap: 1, overflowX: 'auto', pb: 1.25 }}>
+                  {EXAMPLES.map(q => (
+                    <Chip key={q} label={q} size="small" variant="outlined" onClick={() => ask(q)} disabled={!ready} />
+                  ))}
+                </Box>
+              ) : null}
               <AskBox onAsk={ask} onFocus={() => (model === 'frontier' ? undefined : wakeModel())} disabled={!ready} model={model} />
             </Box>
           </Box>
