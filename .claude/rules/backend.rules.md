@@ -19,7 +19,7 @@ Generated SQL is untrusted input.
 
 - Databases MUST be opened with `{ readonly: true }`.
 - Only a single statement that starts with `SELECT` or `WITH` MUST be executed. Anything else (`;`-separated statements, `PRAGMA`, `ATTACH`, DDL, DML) MUST be rejected with 422 and the SQL shown to the user, not run.
-- Results MUST be capped at 200 rows and queries MUST be interrupted after 2 seconds.
+- Results MUST be capped at 200 rows (the query is wrapped in `SELECT * FROM (…) LIMIT 201`). There is no per-query time limit yet; the function's `maxDuration` is the ceiling (`ponytail:` in `sql.ts`).
 - `dbId` MUST be checked against the list of files in `backend/db/`. Paths MUST NOT be built from user input.
 
 ## Cost Guards

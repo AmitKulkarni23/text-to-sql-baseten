@@ -26,5 +26,7 @@ paths:
 
 ## What to test
 
-- MUST test: SQL guard (every rejected statement type, multi-statement, comments hiding a second statement), row and time limits, `dbId` validation, rate limit and daily cap, env validation, prompt building, eval scoring (row order, duplicates, NULLs, type differences), the frontend turn reducer.
-- MUST NOT test: MUI internals, styling, pure display components.
+Amit asked for tests only where they protect something real (2026-11-05). Don't add tests by default.
+
+- MUST test: the SQL guard and read-only execution (`backend/sql.ts`), and eval scoring (`eval/score.ts`).
+- SHOULD NOT test: handlers, hooks, components, config, styling. Check those by running the app.
