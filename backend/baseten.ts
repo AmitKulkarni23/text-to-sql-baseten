@@ -40,3 +40,9 @@ export function createComplete(apiKey: string, timeoutMs = 55_000): Complete {
     return { text, promptTokens, completionTokens }
   }
 }
+
+/** Asks Baseten to start a scaled-to-zero deployment. Fire and forget: 202 means the boot has started (or it is already up). */
+export async function wake(apiKey: string, wakeUrl: string): Promise<boolean> {
+  const res = await fetch(wakeUrl, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}` }, signal: AbortSignal.timeout(5000) }).catch(() => undefined)
+  return res?.ok ?? false
+}

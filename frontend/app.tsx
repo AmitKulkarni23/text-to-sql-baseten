@@ -12,7 +12,7 @@ import { AskBox } from './components/ask-box.tsx'
 import { SchemaPanel } from './components/schema-panel.tsx'
 import { TurnRow } from './components/turn-row.tsx'
 import { useAsk } from './hooks/use-ask.ts'
-import { fetchDbs } from './lib/api.ts'
+import { fetchDbs, wakeModel } from './lib/api.ts'
 import { MODEL_LABELS } from './lib/turns.ts'
 import { COLUMN } from './theme.ts'
 
@@ -79,7 +79,17 @@ export default function App(): React.JSX.Element {
             {models.length === 0 ? (
               <Alert severity="info">No model is connected yet, so questions are turned off.</Alert>
             ) : (
-              <ToggleButtonGroup exclusive size="small" value={model} onChange={(_, m: ModelChoice | null) => m && setModel(m)} aria-label="Model">
+              <ToggleButtonGroup
+                exclusive
+                size="small"
+                value={model}
+                onChange={(_, m: ModelChoice | null) => {
+                  if (!m) return
+                  setModel(m)
+                  if (m !== 'frontier') wakeModel()
+                }}
+                aria-label="Model"
+              >
                 {models.map(m => (
                   <ToggleButton key={m} value={m} sx={{ textTransform: 'none', px: 1.5 }}>
                     {MODEL_LABELS[m]}
@@ -104,7 +114,7 @@ export default function App(): React.JSX.Element {
 
       <Box sx={{ position: 'sticky', bottom: 0, bgcolor: 'background.default', borderTop: 1, borderColor: 'divider', px: 2, py: 1.5 }}>
         <Box sx={{ maxWidth: COLUMN, mx: 'auto' }}>
-          <AskBox onAsk={ask} disabled={!db || models.length === 0 || busy} />
+          <AskBox onAsk={ask} onFocus={() => (model === 'frontier' ? undefined : wakeModel())} disabled={!db || models.length === 0 || busy} />
         </Box>
       </Box>
     </Box>

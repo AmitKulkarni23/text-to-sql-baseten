@@ -6,11 +6,15 @@ model_name: text-to-sql
 base_image:
   image: vllm/vllm-openai:v0.29.0
 docker_server:
-  start_command: vllm serve Qwen/Qwen2.5-Coder-1.5B-Instruct --served-model-name Qwen/Qwen2.5-Coder-1.5B-Instruct --host 0.0.0.0 --port 8000 --max-model-len 4096 --enable-lora --max-lora-rank 16 --lora-modules text-to-sql=/app/data/text-to-sql
+  start_command: vllm serve /models/base --served-model-name Qwen/Qwen2.5-Coder-1.5B-Instruct --host 0.0.0.0 --port 8000 --max-model-len 4096 --enable-lora --max-lora-rank 16 --lora-modules text-to-sql=/app/data/text-to-sql
   readiness_endpoint: /health
   liveness_endpoint: /health
   predict_endpoint: /v1/chat/completions
   server_port: 8000
+# Mirrored and cached by Baseten next to the GPU, so a cold start doesn't re-download 3 GB from Hugging Face (~90 s).
+weights:
+  - source: "hf://Qwen/Qwen2.5-Coder-1.5B-Instruct@2e1fd397ee46e1388853d2af2c993145b0f1098a"
+    mount_location: "/models/base"
 resources:
   accelerator: L4
   use_gpu: true

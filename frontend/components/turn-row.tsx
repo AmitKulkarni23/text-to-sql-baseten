@@ -10,7 +10,7 @@ import { COLD_START_HINT_MS } from '../theme.ts'
 import { ResultsTable } from './results-table.tsx'
 import { SqlBlock } from './sql-block.tsx'
 
-function Pending(): React.JSX.Element {
+function Pending({ waking }: { waking: boolean }): React.JSX.Element {
   const [slow, setSlow] = useState(false)
   useEffect(() => {
     const timer = setTimeout(() => setSlow(true), COLD_START_HINT_MS)
@@ -20,7 +20,9 @@ function Pending(): React.JSX.Element {
     <Stack spacing={1}>
       <LinearProgress aria-label="Writing SQL" />
       <Typography variant="caption" color="text.secondary">
-        {slow ? 'Waking the model up. After a quiet spell it scales to zero, so the first question can take up to a minute.' : 'Writing SQL…'}
+        {waking || slow
+          ? 'Waking the model up. It scales to zero when nobody is using it, so the first question after a quiet spell takes a few minutes. Your question will be answered as soon as it is up.'
+          : 'Writing SQL…'}
       </Typography>
     </Stack>
   )
@@ -40,7 +42,7 @@ export const TurnRow = memo(function TurnRow({ turn }: { turn: Turn }): React.JS
             {MODEL_LABELS[turn.model]}
             {result ? ` · ${(result.latencyMs / 1000).toFixed(2)} s · ${result.rows.length}${result.truncated ? '+' : ''} rows` : ''}
           </Typography>
-          {turn.status === 'pending' ? <Pending /> : null}
+          {turn.status === 'pending' ? <Pending waking={turn.waking ?? false} /> : null}
           {result ? (
             <>
               <SqlBlock sql={result.sql} />

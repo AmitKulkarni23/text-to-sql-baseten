@@ -141,6 +141,19 @@ vercel deploy            # preview deploy
 vercel deploy --prod     # production
 ```
 
+## Cold Starts and Demos
+
+The deployment scales to zero after 15 idle minutes (Baseten default; changing autoscaling at push time isn't enabled for this org). A cold start took 6.5 min before weights were cached (`weights:` in `serving/config.yaml`): about 2.3 min container start, 1.5 min weight download, 1 min engine warmup and CUDA graphs. The app copes: focusing the question box calls `/api/wake`, and a request that times out during a cold start is retried for about 6 minutes with a "waking up" notice.
+
+**Before a demo or interview**, wake it about 5 minutes early:
+
+```bash
+set -a; . ./.env; set +a
+curl -X POST -H "Authorization: Bearer $BASETEN_API_KEY" https://model-$BASETEN_MODEL_ID.api.baseten.co/environments/production/wake
+```
+
+It then costs about $0.85/hr (1x L4) until 15 minutes after the last question.
+
 ## Testing
 
 - `bun test` never calls Baseten or any network. Tests replace `baseten.ts` with a fake passed in as an argument.

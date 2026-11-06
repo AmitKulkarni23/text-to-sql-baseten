@@ -11,6 +11,7 @@ const server = Bun.serve({
     '/api/health': () => handlers.health(),
     '/api/dbs': () => handlers.dbs(),
     '/api/ask': { POST: req => handlers.ask(req) },
+    '/api/wake': { POST: () => handlers.wake() },
   },
 })
 log.info('dev_server_started', { url: server.url.href })

@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField'
 const MAX_QUESTION = 500
 
 /** The question input. Enter sends, Shift+Enter adds a line. */
-export function AskBox({ onAsk, disabled }: { onAsk: (question: string) => void; disabled: boolean }): React.JSX.Element {
+export function AskBox({ onAsk, onFocus, disabled }: { onAsk: (question: string) => void; onFocus: () => void; disabled: boolean }): React.JSX.Element {
   const [question, setQuestion] = useState('')
   const submit = (): void => {
     const q = question.trim()
@@ -31,6 +31,7 @@ export function AskBox({ onAsk, disabled }: { onAsk: (question: string) => void;
         size="small"
         label="Ask a question about the data"
         value={question}
+        onFocus={onFocus}
         onChange={e => setQuestion(e.target.value.slice(0, MAX_QUESTION))}
         onKeyDown={e => {
           if (e.key === 'Enter' && !e.shiftKey) {

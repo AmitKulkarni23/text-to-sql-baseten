@@ -1,4 +1,4 @@
-import { BasetenError, type Complete } from './baseten.ts'
+import { BasetenError, type Complete, wake } from './baseten.ts'
 import type { Config } from './config.ts'
 import { errorMessage, log } from './log.ts'
 import { buildMessages } from './prompt.ts'
@@ -14,7 +14,7 @@ const json = (body: unknown, status = 200): Response => Response.json(body, { st
 const fail = (status: number, code: ErrorCode, message: string, sql?: string): Response =>
   json({ error: { code, message, ...(sql === undefined ? {} : { sql }) } } satisfies ApiError, status)
 
-export type Handlers = { ask: (req: Request) => Promise<Response>; dbs: () => Response; health: () => Response }
+export type Handlers = { ask: (req: Request) => Promise<Response>; wake: () => Promise<Response>; dbs: () => Response; health: () => Response }
 
 /**
  * The API, as plain Request → Response functions: Vercel Functions in api/ and the local dev server both call these.
@@ -26,6 +26,7 @@ export function createHandlers(config: () => Config, complete: (apiKey: string) 
   const hits = new Map<string, number[]>()
   let day = ''
   let callsToday = 0
+  let lastWake = 0
 
   function limited(ip: string): ErrorCode | undefined {
     const t = now()
@@ -43,6 +44,22 @@ export function createHandlers(config: () => Config, complete: (apiKey: string) 
 
   return {
     health: () => json({ ok: true }),
+
+    // Called when someone starts typing, so the GPU boots while they write (cold start is minutes).
+    // At most one wake per minute per instance; it only starts a boot, and the boot stops on its own after 15 idle minutes.
+    wake: async () => {
+      let cfg: Config
+      try {
+        cfg = config()
+      } catch {
+        return fail(500, 'config_error', 'The service is not configured yet.')
+      }
+      if (!cfg.wakeUrl || now() - lastWake < 60_000) return json({ ok: true })
+      lastWake = now()
+      const ok = await wake(cfg.apiKey, cfg.wakeUrl)
+      log.info('model_wake', { ok })
+      return json({ ok })
+    },
 
     dbs: () => {
       try {

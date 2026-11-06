@@ -25,3 +25,12 @@ export async function ask(request: AskRequest, signal: AbortSignal): Promise<Ask
     return { ok: false, error: { code: 'model_unavailable', message: 'Could not reach the server. Check your connection.' } }
   }
 }
+
+let lastWake = 0
+
+/** Starts the GPU booting while the user types. Throttled to once a minute; failures don't matter. */
+export function wakeModel(): void {
+  if (Date.now() - lastWake < 60_000) return
+  lastWake = Date.now()
+  fetch('/api/wake', { method: 'POST' }).catch(() => undefined)
+}
