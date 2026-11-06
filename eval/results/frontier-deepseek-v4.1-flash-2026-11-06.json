@@ -1,0 +1,2767 @@
+{
+  "summary": {
+    "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "baseUrl": "https://inference.baseten.co/v1",
+    "promptVersion": 1,
+    "heldout": {
+      "dataset": "gretelai/synthetic_text_to_sql",
+      "revision": "740ab236e64503fba51be1101df7a1be83bf455d",
+      "split": "test",
+      "seed": 20261105,
+      "testRows": 5851,
+      "usable": 3395,
+      "count": 300,
+      "built": "2026-11-06"
+    },
+    "n": 300,
+    "accuracy": 67,
+    "httpErrors": 0,
+    "latencyMs": {
+      "p50": 952,
+      "p90": 1899
+    },
+    "tokens": {
+      "prompt": 30916,
+      "completion": 64079
+    },
+    "byComplexity": {
+      "window functions": {
+        "n": 9,
+        "accuracy": 11.1
+      },
+      "basic SQL": {
+        "n": 158,
+        "accuracy": 75.9
+      },
+      "aggregation": {
+        "n": 79,
+        "accuracy": 69.6
+      },
+      "single join": {
+        "n": 35,
+        "accuracy": 51.4
+      },
+      "subqueries": {
+        "n": 13,
+        "accuracy": 46.2
+      },
+      "multiple_joins": {
+        "n": 5,
+        "accuracy": 20
+      },
+      "set operations": {
+        "n": 1,
+        "accuracy": 0
+      }
+    },
+    "date": "2026-11-06"
+  },
+  "outcomes": [
+    {
+      "id": 4,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT MAX(quantity) FROM sales WHERE location = 'seafood';",
+      "latencyMs": 1804,
+      "promptTokens": 97,
+      "completionTokens": 400
+    },
+    {
+      "id": 8,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(total_cost) FROM climate_communication WHERE location = 'Antarctica' AND end_date > '2010-12-31';",
+      "latencyMs": 926,
+      "promptTokens": 122,
+      "completionTokens": 210
+    },
+    {
+      "id": 51,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT COUNT(DISTINCT p.id) FROM patients p JOIN treatments t ON p.id = t.patient_id WHERE p.country = 'India' AND t.treatment = 'group therapy';",
+      "latencyMs": 506,
+      "promptTokens": 102,
+      "completionTokens": 100
+    },
+    {
+      "id": 76,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) AS total_trips\nFROM multimodal_trips_canada\nWHERE city = 'Toronto' AND LOWER(mode) LIKE '%public%';",
+      "latencyMs": 1689,
+      "promptTokens": 123,
+      "completionTokens": 419
+    },
+    {
+      "id": 77,
+      "complexity": "subqueries",
+      "match": true,
+      "sql": "SELECT u.name FROM unions u WHERE NOT EXISTS (SELECT 1 FROM injuries i WHERE i.union_id = u.id);",
+      "latencyMs": 707,
+      "promptTokens": 99,
+      "completionTokens": 119
+    },
+    {
+      "id": 107,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT SUM(s.revenue)\nFROM SkincareSales s\nWHERE s.region = 'North America'\n  AND s.productID IN (\n    SELECT productID\n    FROM ProductIngredients\n    WHERE organic = FALSE\n  );",
+      "latencyMs": 1790,
+      "promptTokens": 128,
+      "completionTokens": 432
+    },
+    {
+      "id": 119,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT g.grade_name, AVG(smh.mental_health_score) AS average_mental_health_score\nFROM grades g\nJOIN student_mental_health smh ON g.grade_id = smh.grade_id\nGROUP BY g.grade_id, g.grade_name\nORDER BY average_mental_health_score;",
+      "latencyMs": 449,
+      "promptTokens": 117,
+      "completionTokens": 91
+    },
+    {
+      "id": 121,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(capacity) FROM solar_capacity WHERE country = 'Mexico';",
+      "latencyMs": 1018,
+      "promptTokens": 89,
+      "completionTokens": 20
+    },
+    {
+      "id": 126,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT country, AVG(price) AS average_price\nFROM eco_materials\nGROUP BY country;",
+      "latencyMs": 1149,
+      "promptTokens": 105,
+      "completionTokens": 200
+    },
+    {
+      "id": 145,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT release_year, COUNT(*) AS movie_count\nFROM movies\nGROUP BY release_year\nORDER BY release_year;",
+      "latencyMs": 978,
+      "promptTokens": 83,
+      "completionTokens": 109
+    },
+    {
+      "id": 146,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT item_name, category FROM Menu WHERE sustainability_score > 90;",
+      "latencyMs": 1429,
+      "promptTokens": 101,
+      "completionTokens": 19
+    },
+    {
+      "id": 151,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT region, COUNT(*) AS total_complaints\nFROM complaints\nWHERE LOWER(complaint_type) IN ('mobile', 'broadband')\nGROUP BY region;",
+      "latencyMs": 1735,
+      "promptTokens": 97,
+      "completionTokens": 420
+    },
+    {
+      "id": 165,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT SUM(r.revenue)\nFROM revenue r\nJOIN menus m ON r.menu_id = m.menu_id\nWHERE m.dish_type = 'Breakfast'\n  AND m.location = 'Downtown';",
+      "latencyMs": 950,
+      "promptTokens": 131,
+      "completionTokens": 191
+    },
+    {
+      "id": 173,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM transportation_systems WHERE LOWER(system_type) = 'bicycle-sharing';",
+      "latencyMs": 1769,
+      "promptTokens": 106,
+      "completionTokens": 406
+    },
+    {
+      "id": 224,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM SouthPacificPollution WHERE location = 'South Pacific Ocean';",
+      "latencyMs": 1583,
+      "promptTokens": 100,
+      "completionTokens": 402
+    },
+    {
+      "id": 231,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT region, COUNT(*) AS subscriber_count FROM mobile_subscribers GROUP BY region;",
+      "latencyMs": 1560,
+      "promptTokens": 90,
+      "completionTokens": 73
+    },
+    {
+      "id": 232,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) AS total_subscribers\nFROM broadband_subscribers\nWHERE subscriber_location = 'Urban';",
+      "latencyMs": 1396,
+      "promptTokens": 121,
+      "completionTokens": 272
+    },
+    {
+      "id": 238,
+      "complexity": "window functions",
+      "match": false,
+      "sql": "SELECT id, co_ownership_cost - LAG(co_ownership_cost) OVER (ORDER BY id) AS cost_change\nFROM co_ownership;",
+      "latencyMs": 2404,
+      "promptTokens": 112,
+      "completionTokens": 416
+    },
+    {
+      "id": 260,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT c.CustomerName, SUM(p.TotalPaid) AS TotalPurchases\nFROM Customers c\nJOIN Purchases p ON c.CustomerID = p.CustomerID\nWHERE p.DispensaryName = 'Green Earth'\nGROUP BY c.CustomerID, c.CustomerName\nORDER BY TotalPurchases DESC\nLIMIT 3;",
+      "latencyMs": 1148,
+      "promptTokens": 125,
+      "completionTokens": 270
+    },
+    {
+      "id": 270,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM wildlife_species WHERE region = 'Amazon';",
+      "latencyMs": 2056,
+      "promptTokens": 88,
+      "completionTokens": 399
+    },
+    {
+      "id": 285,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT SUM(num_beds) FROM hospitals WHERE state = 'Texas' AND specialty = 'cancer treatment';",
+      "latencyMs": 1291,
+      "promptTokens": 106,
+      "completionTokens": 272
+    },
+    {
+      "id": 298,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM Desserts WHERE is_dairy_free = 1 AND country = 'France';",
+      "latencyMs": 563,
+      "promptTokens": 93,
+      "completionTokens": 112
+    },
+    {
+      "id": 309,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MIN(cost) FROM InfrastructureProjects WHERE project_type = 'tunnel' AND region = 'Central';",
+      "latencyMs": 385,
+      "promptTokens": 102,
+      "completionTokens": 27
+    },
+    {
+      "id": 316,
+      "complexity": "subqueries",
+      "match": false,
+      "sql": "SELECT operation_name, environmental_impact\nFROM mining_operations\nWHERE environmental_impact > (SELECT AVG(environmental_impact) FROM mining_operations);",
+      "latencyMs": 572,
+      "promptTokens": 98,
+      "completionTokens": 117
+    },
+    {
+      "id": 343,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT network, release_year, COUNT(*) AS show_count FROM tv_shows GROUP BY network, release_year;",
+      "latencyMs": 1703,
+      "promptTokens": 95,
+      "completionTokens": 146
+    },
+    {
+      "id": 347,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT project_name, end_date FROM climate_mitigation WHERE region = 'Oceania';",
+      "latencyMs": 603,
+      "promptTokens": 101,
+      "completionTokens": 94
+    },
+    {
+      "id": 349,
+      "complexity": "subqueries",
+      "match": false,
+      "sql": "WITH europe AS (\n  SELECT year,\n         temperature - LAG(temperature) OVER (ORDER BY year) AS increase\n  FROM temperature_data\n  WHERE region = 'Europe'\n)\nSELECT increase AS min_temperature_increase, year\nFROM europe\nWHERE year >= 2000 AND increase IS NOT NULL\nORDER BY increase ASC\nLIMIT 1;",
+      "latencyMs": 1884,
+      "promptTokens": 107,
+      "completionTokens": 460
+    },
+    {
+      "id": 359,
+      "complexity": "subqueries",
+      "match": false,
+      "error": "unrecognized token: \"'Mali\"",
+      "sql": "SELECT AVG(contract_count) FROM (SELECT d.id, COUNT(sc.id) AS contract_count FROM developers d LEFT JOIN smart_contracts sc ON sc.developer_id = d.id WHERE d.country IN ('Nigeria', 'Kenya', 'South Africa', 'Egypt', 'Ghana', 'Ethiopia', 'Tanzania', 'Uganda', 'Algeria', 'Morocco', 'Angola', 'Mozambique', 'Madagascar', 'Cameroon', 'Côte d''Ivoire', 'Niger', 'Burkina Faso', 'Mali",
+      "latencyMs": 2084,
+      "promptTokens": 111,
+      "completionTokens": 512
+    },
+    {
+      "id": 396,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT Country, AVG(Temperature) AS avg_temperature\nFROM WeatherData\nWHERE strftime('%m', Timestamp) = '06'\nGROUP BY Country\nORDER BY avg_temperature DESC;",
+      "latencyMs": 743,
+      "promptTokens": 104,
+      "completionTokens": 163
+    },
+    {
+      "id": 397,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT AVG(Amount) AS average_budget FROM Budget WHERE District IN ('G', 'H') AND Year = 2021;",
+      "latencyMs": 1118,
+      "promptTokens": 95,
+      "completionTokens": 260
+    },
+    {
+      "id": 413,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(sustainability_score) FROM garment_data_2 WHERE collection = 'Autumn 2021';",
+      "latencyMs": 296,
+      "promptTokens": 100,
+      "completionTokens": 27
+    },
+    {
+      "id": 433,
+      "complexity": "subqueries",
+      "match": true,
+      "sql": "SELECT SUM(te.Hours) FROM Attorneys a JOIN TimeEntries te ON a.AttorneyID = te.AttorneyID WHERE a.Name = 'John Doe';",
+      "latencyMs": 673,
+      "promptTokens": 113,
+      "completionTokens": 130
+    },
+    {
+      "id": 489,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT Name, Type FROM Bridges WHERE State = 'California';",
+      "latencyMs": 218,
+      "promptTokens": 91,
+      "completionTokens": 17
+    },
+    {
+      "id": 495,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT SUM(di.quantity) FROM dish_ingredients di JOIN ingredients i ON di.ingredient = i.ingredient WHERE i.is_local = 1;",
+      "latencyMs": 725,
+      "promptTokens": 112,
+      "completionTokens": 160
+    },
+    {
+      "id": 505,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT p.region,\n       AVG(CASE WHEN aq.air_quality_id IS NOT NULL THEN aq.pollution_level END) AS avg_pollution\nFROM policies p\nJOIN air_quality aq ON aq.region = p.region\nWHERE p.region LIKE '%Industrial%'\nGROUP BY p.region;",
+      "latencyMs": 2641,
+      "promptTokens": 117,
+      "completionTokens": 457
+    },
+    {
+      "id": 552,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM investments WHERE investment_type = 'Social Impact' AND country = 'India' AND investment_year = 2020;",
+      "latencyMs": 587,
+      "promptTokens": 97,
+      "completionTokens": 32
+    },
+    {
+      "id": 560,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT AVG(mental_health_score) FROM students WHERE gender = 'female';",
+      "latencyMs": 620,
+      "promptTokens": 95,
+      "completionTokens": 22
+    },
+    {
+      "id": 564,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(capacity) FROM energy_storage WHERE country IN ('Australia', 'Canada') AND year >= 2018;",
+      "latencyMs": 682,
+      "promptTokens": 104,
+      "completionTokens": 137
+    },
+    {
+      "id": 582,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT AVG(age) FROM patient_demographics WHERE treatment = 'group therapy' AND country = 'India';",
+      "latencyMs": 277,
+      "promptTokens": 98,
+      "completionTokens": 29
+    },
+    {
+      "id": 610,
+      "complexity": "subqueries",
+      "match": false,
+      "sql": "SELECT 100.0 * SUM(CASE WHEN location = 'Caribbean' AND completion_year = 2020 THEN 1 ELSE 0 END) / COUNT(*) AS percentage\nFROM community_projects;",
+      "latencyMs": 1178,
+      "promptTokens": 102,
+      "completionTokens": 260
+    },
+    {
+      "id": 642,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT department, COUNT(*) AS number_of_personnel FROM intelligence_personnel_uk GROUP BY department;",
+      "latencyMs": 1759,
+      "promptTokens": 97,
+      "completionTokens": 408
+    },
+    {
+      "id": 666,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT city, SUM(co2_emission) AS total_co2_emission FROM Buildings WHERE construction_year < 2000 GROUP BY city;",
+      "latencyMs": 258,
+      "promptTokens": 104,
+      "completionTokens": 35
+    },
+    {
+      "id": 668,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(EnergySavings) FROM HotelEnergy WHERE Country = 'Egypt';",
+      "latencyMs": 1122,
+      "promptTokens": 92,
+      "completionTokens": 235
+    },
+    {
+      "id": 694,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT AVG(num_satellites) FROM countries WHERE name IN (SELECT country FROM space_programs);",
+      "latencyMs": 1016,
+      "promptTokens": 104,
+      "completionTokens": 223
+    },
+    {
+      "id": 701,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(revenue) AS total_revenue\nFROM sales\nWHERE category = 'Footwear'\n  AND country = 'Germany'\n  AND is_eco_friendly = 1\n  AND sale_date BETWEEN '2021-04-01' AND '2021-06-30';",
+      "latencyMs": 1779,
+      "promptTokens": 127,
+      "completionTokens": 446
+    },
+    {
+      "id": 734,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT year, SUM(amount) AS total_defense_spending\nFROM defense_spending\nWHERE year BETWEEN 2015 AND 2020\nGROUP BY year\nORDER BY year;",
+      "latencyMs": 1103,
+      "promptTokens": 96,
+      "completionTokens": 200
+    },
+    {
+      "id": 752,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(financial_wellbeing_score)\nFROM shariah_compliant_customers\nWHERE shariah_compliant_account = 1\n  AND wellbeing_assessment_date BETWEEN '2022-04-01' AND '2022-06-30';",
+      "latencyMs": 1053,
+      "promptTokens": 125,
+      "completionTokens": 252
+    },
+    {
+      "id": 769,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT region, AVG(data_usage) AS average_data_usage FROM subscribers_2 GROUP BY region;",
+      "latencyMs": 503,
+      "promptTokens": 93,
+      "completionTokens": 100
+    },
+    {
+      "id": 774,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(DISTINCT player_id) FROM player_achievements WHERE date_earned = '2022-01-01';",
+      "latencyMs": 1094,
+      "promptTokens": 110,
+      "completionTokens": 140
+    },
+    {
+      "id": 780,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT sport, AVG(age) FROM athlete_details GROUP BY sport;",
+      "latencyMs": 456,
+      "promptTokens": 104,
+      "completionTokens": 20
+    },
+    {
+      "id": 788,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT country\nFROM Projects\nWHERE LOWER(project_type) = 'agricultural'\nGROUP BY country\nORDER BY MAX(economic_diversification_index) DESC\nLIMIT 5;",
+      "latencyMs": 1885,
+      "promptTokens": 112,
+      "completionTokens": 425
+    },
+    {
+      "id": 791,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT species, MIN(biomass) FROM fish_stock GROUP BY species;",
+      "latencyMs": 434,
+      "promptTokens": 92,
+      "completionTokens": 85
+    },
+    {
+      "id": 802,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT region, AVG(sequestration / area) AS avg_sequestration_per_hectare\nFROM carbon_sequestration\nGROUP BY region;",
+      "latencyMs": 999,
+      "promptTokens": 92,
+      "completionTokens": 227
+    },
+    {
+      "id": 807,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(attendance) FROM cultural_events WHERE country = 'France';",
+      "latencyMs": 1119,
+      "promptTokens": 100,
+      "completionTokens": 126
+    },
+    {
+      "id": 821,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(production) FROM wells WHERE location = 'North Sea';",
+      "latencyMs": 326,
+      "promptTokens": 98,
+      "completionTokens": 19
+    },
+    {
+      "id": 833,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT v.VendorName, SUM(p.Sales) AS TotalSold\nFROM Vendors v\nJOIN Packages p ON v.VendorID = p.VendorID\nWHERE p.PackageType IN ('Sustainable', 'Virtual')\nGROUP BY v.VendorID, v.VendorName;",
+      "latencyMs": 1899,
+      "promptTokens": 116,
+      "completionTokens": 445
+    },
+    {
+      "id": 874,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(production_capacity) FROM chemical_plants WHERE country = 'Canada';",
+      "latencyMs": 338,
+      "promptTokens": 101,
+      "completionTokens": 22
+    },
+    {
+      "id": 876,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT AVG(r.expenditures)\nFROM r_and_d_expenditures r\nJOIN drug_approval d ON r.drug_name = d.drug_name\nWHERE d.market = 'US';",
+      "latencyMs": 950,
+      "promptTokens": 112,
+      "completionTokens": 199
+    },
+    {
+      "id": 895,
+      "complexity": "window functions",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM volunteers_ext AS m WHERE m.skill = 'Medical' AND EXISTS (SELECT 1 FROM volunteers_ext AS e WHERE e.skill = 'Engineering' AND m.assignment_date < e.assignment_date);",
+      "latencyMs": 2964,
+      "promptTokens": 114,
+      "completionTokens": 432
+    },
+    {
+      "id": 985,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM inventory WHERE category = 'bakery' AND gluten_free = 0;",
+      "latencyMs": 914,
+      "promptTokens": 95,
+      "completionTokens": 178
+    },
+    {
+      "id": 1023,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT * FROM Spring2023 WHERE material IN ('silk', 'cotton');",
+      "latencyMs": 790,
+      "promptTokens": 103,
+      "completionTokens": 158
+    },
+    {
+      "id": 1038,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT SUM(investment) FROM climate_investments WHERE category = 'Climate Communication' AND region = 'Europe and Central Asia' AND year = 2019;",
+      "latencyMs": 1352,
+      "promptTokens": 106,
+      "completionTokens": 201
+    },
+    {
+      "id": 1045,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM smart_contracts WHERE developer_community = 'Underrepresented';",
+      "latencyMs": 1852,
+      "promptTokens": 106,
+      "completionTokens": 403
+    },
+    {
+      "id": 1066,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT station_id, MIN(num_bikes) AS min_bikes\nFROM bike_stations\nWHERE city = 'Paris'\nGROUP BY station_id;",
+      "latencyMs": 1587,
+      "promptTokens": 95,
+      "completionTokens": 394
+    },
+    {
+      "id": 1116,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT initiative, funding_source FROM community_development;",
+      "latencyMs": 2422,
+      "promptTokens": 108,
+      "completionTokens": 396
+    },
+    {
+      "id": 1131,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(carbon_sequestration_rate) FROM forests WHERE region = 'Tropical';",
+      "latencyMs": 1075,
+      "promptTokens": 103,
+      "completionTokens": 154
+    },
+    {
+      "id": 1136,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(ticket_price * attendance) FROM events;",
+      "latencyMs": 244,
+      "promptTokens": 113,
+      "completionTokens": 23
+    },
+    {
+      "id": 1141,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM accounts WHERE region = 'Asia-Pacific' AND risk_level = 'high' AND balance > 100000;",
+      "latencyMs": 233,
+      "promptTokens": 109,
+      "completionTokens": 31
+    },
+    {
+      "id": 1200,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(energy_efficiency_rating) FROM uk_appliances WHERE country = 'United Kingdom';",
+      "latencyMs": 545,
+      "promptTokens": 103,
+      "completionTokens": 115
+    },
+    {
+      "id": 1249,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT route_id, feature, AVG(value) AS average_value\nFROM accessibility\nWHERE country = 'Japan'\nGROUP BY route_id, feature;",
+      "latencyMs": 718,
+      "promptTokens": 110,
+      "completionTokens": 157
+    },
+    {
+      "id": 1252,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT salesperson, SUM(items) AS total_items FROM sales GROUP BY salesperson;",
+      "latencyMs": 445,
+      "promptTokens": 91,
+      "completionTokens": 86
+    },
+    {
+      "id": 1258,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM ArcticBiodiversity;",
+      "latencyMs": 857,
+      "promptTokens": 92,
+      "completionTokens": 132
+    },
+    {
+      "id": 1271,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(PlayerAge) FROM Players WHERE Game = 'Fortnite' AND Continent = 'Asia';",
+      "latencyMs": 926,
+      "promptTokens": 100,
+      "completionTokens": 27
+    },
+    {
+      "id": 1281,
+      "complexity": "subqueries",
+      "match": false,
+      "sql": "SELECT contributor, recycling_rate FROM waste_contributors ORDER BY recycling_rate ASC LIMIT 3;",
+      "latencyMs": 263,
+      "promptTokens": 101,
+      "completionTokens": 32
+    },
+    {
+      "id": 1294,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT market_share FROM market_share WHERE drug_name = 'JKL-012' AND region = 'India' AND quarter = 3 AND year = 2022;",
+      "latencyMs": 490,
+      "promptTokens": 108,
+      "completionTokens": 41
+    },
+    {
+      "id": 1297,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT num_founders FROM companies WHERE region = 'San Francisco';",
+      "latencyMs": 532,
+      "promptTokens": 93,
+      "completionTokens": 108
+    },
+    {
+      "id": 1302,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM marine_species WHERE region = 'Arctic' AND conservation_status IN ('Threatened', 'Endangered');",
+      "latencyMs": 695,
+      "promptTokens": 98,
+      "completionTokens": 152
+    },
+    {
+      "id": 1331,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM renewable_count WHERE location = 'Country R';",
+      "latencyMs": 813,
+      "promptTokens": 85,
+      "completionTokens": 89
+    },
+    {
+      "id": 1340,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(fare_amount) FROM fares WHERE mode_id IN (1, 2);",
+      "latencyMs": 1763,
+      "promptTokens": 93,
+      "completionTokens": 404
+    },
+    {
+      "id": 1353,
+      "complexity": "aggregation",
+      "match": false,
+      "error": "incomplete input",
+      "sql": "SELECT worker_id, worker_name, SUM(patients_served) AS total_patients\nFROM community_workers\nWHERE community_type = 'underrepresented'\n  AND year = (SELECT MAX(year) FROM community_workers)\nGROUP BY worker_id, worker_name\nHAVING SUM(patients_served) = (\n  SELECT MAX(total)\n  FROM (\n    SELECT SUM(patients_served) AS total\n    FROM community_workers\n    WHERE community_type = 'underrepresented'\n      AND year = (SELECT MAX(year) FROM community_workers)\n    GROUP BY worker_id, worker_name\n  )",
+      "latencyMs": 2097,
+      "promptTokens": 109,
+      "completionTokens": 512
+    },
+    {
+      "id": 1453,
+      "complexity": "aggregation",
+      "match": false,
+      "error": "incomplete input",
+      "sql": "WITH first_last AS (\n  SELECT student_id,\n         (SELECT score FROM student_mental_health s2 WHERE s2.student_id = s1.student_id ORDER BY year ASC LIMIT 1) AS first_score,\n         (SELECT score FROM student_mental_health s3 WHERE s3.student_id = s1.student_id ORDER BY year DESC LIMIT 1) AS last_score\n  FROM (SELECT DISTINCT student_id FROM student_mental_health) s1\n),\nimprovements AS (\n  SELECT student_id, last_score - first_score AS improvement\n  FROM first_last\n)\nSELECT",
+      "latencyMs": 1944,
+      "promptTokens": 90,
+      "completionTokens": 512
+    },
+    {
+      "id": 1504,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT model_country, COUNT(*) AS model_count FROM ai_models GROUP BY model_country ORDER BY model_count DESC;",
+      "latencyMs": 520,
+      "promptTokens": 87,
+      "completionTokens": 93
+    },
+    {
+      "id": 1506,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM animal_habitats;",
+      "latencyMs": 494,
+      "promptTokens": 97,
+      "completionTokens": 76
+    },
+    {
+      "id": 1512,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(Cost) FROM Green_Projects WHERE City = 'Seattle';",
+      "latencyMs": 1277,
+      "promptTokens": 106,
+      "completionTokens": 295
+    },
+    {
+      "id": 1580,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT PolicyType, COUNT(*) AS NumberOfClaims, SUM(ClaimAmount) AS TotalClaimAmount\nFROM Claims\nWHERE PolicyholderCountry = 'Canada'\nGROUP BY PolicyType\nORDER BY NumberOfClaims DESC\nLIMIT 3;",
+      "latencyMs": 1870,
+      "promptTokens": 114,
+      "completionTokens": 435
+    },
+    {
+      "id": 1608,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(amount) FROM rd_expenditure WHERE drug_name = 'DrugA';",
+      "latencyMs": 236,
+      "promptTokens": 88,
+      "completionTokens": 23
+    },
+    {
+      "id": 1632,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT JobTitle, Region,\n       AVG(CASE WHEN CompletedDiversityTraining = 1 THEN Salary END) AS AvgSalaryCompleted,\n       AVG(CASE WHEN CompletedDiversityTraining = 0 THEN Salary END) AS AvgSalaryNotCompleted,\n       AVG(CASE WHEN CompletedDiversityTraining = 1 THEN Salary END) - AVG(CASE WHEN CompletedDiversityTraining = 0 THEN Salary END) AS SalaryDifference\nFROM Employees\nGROUP BY JobTitle, Region;",
+      "latencyMs": 1813,
+      "promptTokens": 123,
+      "completionTokens": 485
+    },
+    {
+      "id": 1726,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM EmployeeEducation WHERE Department = 'Accessibility Services' AND (Degree LIKE '%Master%' OR Degree LIKE '%Doctor%' OR Degree LIKE '%PhD%' OR Degree LIKE '%Ph.D%');",
+      "latencyMs": 2010,
+      "promptTokens": 92,
+      "completionTokens": 430
+    },
+    {
+      "id": 1780,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT Region, SUM(NumLibraries) AS TotalLibraries\nFROM Libraries\nGROUP BY Region;",
+      "latencyMs": 1551,
+      "promptTokens": 83,
+      "completionTokens": 269
+    },
+    {
+      "id": 1787,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT country, SUM(cost) AS total_cost\nFROM missions\nWHERE mission_name LIKE '%Mars%'\nGROUP BY country;",
+      "latencyMs": 995,
+      "promptTokens": 92,
+      "completionTokens": 181
+    },
+    {
+      "id": 1812,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(score) FROM threat_intelligence WHERE source_country = 'Russia';",
+      "latencyMs": 336,
+      "promptTokens": 96,
+      "completionTokens": 22
+    },
+    {
+      "id": 1819,
+      "complexity": "window functions",
+      "match": false,
+      "sql": "SELECT song_id FROM songs WHERE genre = 'Rock' ORDER BY song_length DESC LIMIT 3;",
+      "latencyMs": 497,
+      "promptTokens": 89,
+      "completionTokens": 41
+    },
+    {
+      "id": 1843,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT therapy FROM patients GROUP BY therapy ORDER BY COUNT(*) DESC LIMIT 1;",
+      "latencyMs": 718,
+      "promptTokens": 87,
+      "completionTokens": 140
+    },
+    {
+      "id": 1860,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT AVG(g.playtime_mins) / 60.0 AS avg_playtime_hours\nFROM games g\nJOIN players p ON g.player_id = p.player_id\nWHERE p.player_country = 'Germany'\n  AND g.game_genre = 'Simulation';",
+      "latencyMs": 1189,
+      "promptTokens": 126,
+      "completionTokens": 286
+    },
+    {
+      "id": 1869,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(capacity_mw) FROM renewable_energy_projects WHERE category = 'solar';",
+      "latencyMs": 238,
+      "promptTokens": 115,
+      "completionTokens": 25
+    },
+    {
+      "id": 1900,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT rep_name, SUM(total_sales) AS total_sales\nFROM sales_data_2\nWHERE drug_name = 'DrugT'\n  AND region = 'North America'\n  AND quarter = 1\nGROUP BY rep_name\nORDER BY total_sales DESC\nLIMIT 2;",
+      "latencyMs": 1828,
+      "promptTokens": 116,
+      "completionTokens": 446
+    },
+    {
+      "id": 1915,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(contract_value) AS total_spent\nFROM ContractData\nWHERE company LIKE '%Defense%'\n  AND contract_date >= '2021-04-01'\n  AND contract_date <= '2021-06-30';",
+      "latencyMs": 1504,
+      "promptTokens": 103,
+      "completionTokens": 396
+    },
+    {
+      "id": 1942,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT s.id, s.name, s.country FROM Suppliers s JOIN RecycledMaterials r ON s.id = r.supplier_id WHERE s.country = 'France';",
+      "latencyMs": 521,
+      "promptTokens": 101,
+      "completionTokens": 40
+    },
+    {
+      "id": 1955,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT ota_name, revenue\nFROM otas\nWHERE region = 'Europe'\nORDER BY revenue DESC;",
+      "latencyMs": 1106,
+      "promptTokens": 101,
+      "completionTokens": 157
+    },
+    {
+      "id": 2048,
+      "complexity": "window functions",
+      "match": false,
+      "error": "unrecognized token: \"'Qatar\"",
+      "sql": "SELECT AVG(age) FROM psychologists WHERE country IN ('China', 'India', 'Japan', 'South Korea', 'Indonesia', 'Thailand', 'Vietnam', 'Philippines', 'Malaysia', 'Singapore', 'Pakistan', 'Bangladesh', 'Sri Lanka', 'Nepal', 'Myanmar', 'Cambodia', 'Laos', 'Mongolia', 'Kazakhstan', 'Uzbekistan', 'Afghanistan', 'Iran', 'Iraq', 'Israel', 'Jordan', 'Lebanon', 'Saudi Arabia', 'United Arab Emirates', 'Qatar",
+      "latencyMs": 2109,
+      "promptTokens": 105,
+      "completionTokens": 512
+    },
+    {
+      "id": 2065,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT Refiner, AVG(Production) AS AverageAnnualProduction\nFROM DysprosiumProduction\nWHERE Year BETWEEN 2017 AND 2019\nGROUP BY Refiner;",
+      "latencyMs": 934,
+      "promptTokens": 105,
+      "completionTokens": 222
+    },
+    {
+      "id": 2073,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM fleet WHERE vehicle_type = 'bus' AND is_autonomous = 1;",
+      "latencyMs": 246,
+      "promptTokens": 96,
+      "completionTokens": 26
+    },
+    {
+      "id": 2078,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(cargo_capacity) FROM Vessels WHERE type <> 'Tanker';",
+      "latencyMs": 2323,
+      "promptTokens": 108,
+      "completionTokens": 403
+    },
+    {
+      "id": 2090,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT State, SUM(PermitCount) AS TotalPermits FROM PermitsByState GROUP BY State;",
+      "latencyMs": 542,
+      "promptTokens": 90,
+      "completionTokens": 94
+    },
+    {
+      "id": 2097,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT status FROM digital_assets WHERE name = 'CoinX';",
+      "latencyMs": 361,
+      "promptTokens": 89,
+      "completionTokens": 66
+    },
+    {
+      "id": 2106,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT country, SUM(budget) AS total_budget\nFROM CybersecurityBudgets\nGROUP BY country\nORDER BY total_budget DESC\nLIMIT 3;",
+      "latencyMs": 752,
+      "promptTokens": 94,
+      "completionTokens": 171
+    },
+    {
+      "id": 2107,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT gender, AVG(mental_health_score) FROM students GROUP BY gender;",
+      "latencyMs": 225,
+      "promptTokens": 98,
+      "completionTokens": 22
+    },
+    {
+      "id": 2140,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT month, SUM(minerals_extracted) AS total_minerals_extracted\nFROM extraction\nWHERE location = 'north' AND year = 2020\nGROUP BY month\nORDER BY month;",
+      "latencyMs": 725,
+      "promptTokens": 105,
+      "completionTokens": 154
+    },
+    {
+      "id": 2149,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT Country, COUNT(DISTINCT GameGenre) AS UniqueGenres\nFROM Players\nGROUP BY Country;",
+      "latencyMs": 821,
+      "promptTokens": 93,
+      "completionTokens": 99
+    },
+    {
+      "id": 2236,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT game_genre, AVG(performance_score) FROM game_genre_performance GROUP BY game_genre;",
+      "latencyMs": 249,
+      "promptTokens": 95,
+      "completionTokens": 28
+    },
+    {
+      "id": 2251,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(max_speed) FROM vessels WHERE max_speed > 25;",
+      "latencyMs": 471,
+      "promptTokens": 105,
+      "completionTokens": 92
+    },
+    {
+      "id": 2258,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT project_type, year, AVG(cost) AS average_cost\nFROM projects_pakistan_balochistan\nWHERE province = 'Balochistan' AND project_type = 'Rural Infrastructure'\nGROUP BY project_type, year\nORDER BY project_type, year;",
+      "latencyMs": 1710,
+      "promptTokens": 115,
+      "completionTokens": 442
+    },
+    {
+      "id": 2288,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT DISTINCT p.name\nFROM ports p\nJOIN cargo c ON p.id = c.port_id\nWHERE c.weight > 1000;",
+      "latencyMs": 1754,
+      "promptTokens": 111,
+      "completionTokens": 417
+    },
+    {
+      "id": 2346,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(workouts_logged) FROM user_info WHERE gender = 'female';",
+      "latencyMs": 270,
+      "promptTokens": 95,
+      "completionTokens": 22
+    },
+    {
+      "id": 2353,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(Hours_Per_Week) FROM Labor_Statistics WHERE Country = 'Germany' AND Job_Title LIKE '%Construction Laborer%';",
+      "latencyMs": 1670,
+      "promptTokens": 106,
+      "completionTokens": 416
+    },
+    {
+      "id": 2372,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM healthcare_staff WHERE gender = 'Female' AND position = 'Doctor';",
+      "latencyMs": 623,
+      "promptTokens": 100,
+      "completionTokens": 103
+    },
+    {
+      "id": 2379,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT o.operator_name\nFROM wells w\nJOIN operators o ON o.operator_id = w.operator_id\nGROUP BY o.operator_id, o.operator_name\nHAVING AVG(w.production_qty) = (\n    SELECT MAX(avg_prod)\n    FROM (\n        SELECT AVG(production_qty) AS avg_prod\n        FROM wells\n        GROUP BY operator_id\n    )\n);",
+      "latencyMs": 1803,
+      "promptTokens": 106,
+      "completionTokens": 474
+    },
+    {
+      "id": 2391,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM projects WHERE country = 'Japan' AND techniques LIKE '%CRISPR%';",
+      "latencyMs": 616,
+      "promptTokens": 94,
+      "completionTokens": 130
+    },
+    {
+      "id": 2398,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(number_of_stories) FROM building WHERE state = 'New York' AND height > 150;",
+      "latencyMs": 824,
+      "promptTokens": 107,
+      "completionTokens": 130
+    },
+    {
+      "id": 2407,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(social_impact_score) FROM programs;",
+      "latencyMs": 277,
+      "promptTokens": 95,
+      "completionTokens": 17
+    },
+    {
+      "id": 2419,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM sustainable_urbanism_projects WHERE state = 'California';",
+      "latencyMs": 401,
+      "promptTokens": 95,
+      "completionTokens": 71
+    },
+    {
+      "id": 2428,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(trip_duration) FROM public_transport;",
+      "latencyMs": 434,
+      "promptTokens": 88,
+      "completionTokens": 65
+    },
+    {
+      "id": 2443,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM Farm WHERE species = 'Tuna' AND region = 'Caribbean';",
+      "latencyMs": 420,
+      "promptTokens": 106,
+      "completionTokens": 69
+    },
+    {
+      "id": 2450,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT v.state, v.vaccine_type, COUNT(v.center_id) AS num_centers\nFROM vaccination_centers v\nJOIN state_data s ON v.state = s.state\nWHERE v.vaccine_type IN ('COVID-19', 'Flu')\nGROUP BY v.state, v.vaccine_type;",
+      "latencyMs": 2393,
+      "promptTokens": 128,
+      "completionTokens": 452
+    },
+    {
+      "id": 2469,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT department, COUNT(*) AS total_workers\nFROM workers\nGROUP BY department;",
+      "latencyMs": 1730,
+      "promptTokens": 110,
+      "completionTokens": 403
+    },
+    {
+      "id": 2476,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT country, MAX(price) AS max_price FROM carbon_prices_gn WHERE country IN ('Germany', 'Norway') GROUP BY country;",
+      "latencyMs": 1429,
+      "promptTokens": 92,
+      "completionTokens": 363
+    },
+    {
+      "id": 2541,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(region), AVG(impact_score) FROM drought_impact_EG WHERE country = 'Egypt';",
+      "latencyMs": 560,
+      "promptTokens": 98,
+      "completionTokens": 126
+    },
+    {
+      "id": 2556,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT drug_name\nFROM sales\nWHERE continent = 'Europe' AND strftime('%Y', sale_date) = '2022'\nGROUP BY drug_name\nORDER BY SUM(sales_amount) ASC\nLIMIT 1;",
+      "latencyMs": 1690,
+      "promptTokens": 95,
+      "completionTokens": 432
+    },
+    {
+      "id": 2586,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT type FROM basketball_fouls GROUP BY type ORDER BY COUNT(*) DESC LIMIT 1;",
+      "latencyMs": 599,
+      "promptTokens": 135,
+      "completionTokens": 109
+    },
+    {
+      "id": 2628,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT city, ev_count, av_count FROM UsEvaCount WHERE city IN ('New York', 'Los Angeles');",
+      "latencyMs": 1499,
+      "promptTokens": 103,
+      "completionTokens": 344
+    },
+    {
+      "id": 2633,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(Capacity) FROM Vessels;",
+      "latencyMs": 187,
+      "promptTokens": 93,
+      "completionTokens": 14
+    },
+    {
+      "id": 2647,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT msy_value FROM msy WHERE species = 'Catfish' AND region = 'Pacific Ocean' AND year = 2024;",
+      "latencyMs": 1376,
+      "promptTokens": 111,
+      "completionTokens": 138
+    },
+    {
+      "id": 2678,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT teacher_id, COUNT(course_id) AS num_courses\nFROM teacher_pd\nGROUP BY teacher_id\nORDER BY num_courses;",
+      "latencyMs": 1482,
+      "promptTokens": 93,
+      "completionTokens": 328
+    },
+    {
+      "id": 2691,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT MIN(serving_size), MAX(serving_size) FROM MealSizes WHERE is_vegan = 1 AND country = 'United States';",
+      "latencyMs": 710,
+      "promptTokens": 104,
+      "completionTokens": 153
+    },
+    {
+      "id": 2726,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT cuisine, AVG(revenue) AS average_daily_revenue\nFROM daily_revenue\nWHERE date >= '2022-01-01' AND date <= '2022-03-31'\nGROUP BY cuisine;",
+      "latencyMs": 1594,
+      "promptTokens": 102,
+      "completionTokens": 371
+    },
+    {
+      "id": 2773,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(age) FROM american_archaeology WHERE material = 'stone';",
+      "latencyMs": 233,
+      "promptTokens": 111,
+      "completionTokens": 22
+    },
+    {
+      "id": 2798,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT college_name,\n       SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) AS female_count,\n       SUM(CASE WHEN gender = 'Non-binary' THEN 1 ELSE 0 END) AS non_binary_count\nFROM faculty\nGROUP BY college_name;",
+      "latencyMs": 1854,
+      "promptTokens": 102,
+      "completionTokens": 446
+    },
+    {
+      "id": 2814,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT OCEAN, AVERAGE_DEPTH FROM OCEAN_DEPTHS WHERE AVERAGE_DEPTH > 3000;",
+      "latencyMs": 996,
+      "promptTokens": 104,
+      "completionTokens": 230
+    },
+    {
+      "id": 2827,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT SUM(s.revenue) AS total_ticket_sales\nFROM sales s\nJOIN games g ON s.game_id = g.game_id\nWHERE LOWER(g.game_type) IN ('basketball', 'soccer');",
+      "latencyMs": 1625,
+      "promptTokens": 108,
+      "completionTokens": 421
+    },
+    {
+      "id": 2839,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT category, num_visitors, num_exhibitions FROM art_categories;",
+      "latencyMs": 1601,
+      "promptTokens": 99,
+      "completionTokens": 403
+    },
+    {
+      "id": 2858,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM Products WHERE Category = 'Foundation' AND Rating >= 4.0;",
+      "latencyMs": 242,
+      "promptTokens": 100,
+      "completionTokens": 24
+    },
+    {
+      "id": 2887,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT h.hotel_name, SUM(b.revenue) AS total_revenue\nFROM ota_bookings b\nJOIN hotels h ON b.ota_id = h.ota_id\nWHERE b.booking_date BETWEEN '2021-06-01' AND '2021-06-02'\n  AND h.ai_operations = 1\nGROUP BY h.hotel_id, h.hotel_name;",
+      "latencyMs": 1780,
+      "promptTokens": 130,
+      "completionTokens": 469
+    },
+    {
+      "id": 2892,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT visitors FROM tourism_stats WHERE destination = 'Australia' AND year = 2018;",
+      "latencyMs": 1349,
+      "promptTokens": 89,
+      "completionTokens": 279
+    },
+    {
+      "id": 2897,
+      "complexity": "multiple_joins",
+      "match": false,
+      "sql": "SELECT r.region_name,\n       ROUND(100.0 * COUNT(DISTINCT m.subscriber_id) / (SELECT COUNT(*) FROM mobile_subscribers), 2) AS mobile_percentage,\n       ROUND(100.0 * COUNT(DISTINCT b.subscriber_id) / (SELECT COUNT(*) FROM broadband_subscribers), 2) AS broadband_percentage\nFROM regions r\nLEFT JOIN mobile_subscribers m ON r.region_id = m.region_id\nLEFT JOIN broadband_subscribers b ON r.region_id = b.region_id\nGROUP BY r.region_id, r.region_name;",
+      "latencyMs": 1980,
+      "promptTokens": 117,
+      "completionTokens": 512
+    },
+    {
+      "id": 2915,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT state, SUM(inspections) AS total_inspections FROM safety_inspections GROUP BY state;",
+      "latencyMs": 441,
+      "promptTokens": 90,
+      "completionTokens": 94
+    },
+    {
+      "id": 2918,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT vessel_id, SUM(cargo_weight) AS total_cargo_weight FROM vessel_cargo GROUP BY vessel_id;",
+      "latencyMs": 691,
+      "promptTokens": 92,
+      "completionTokens": 104
+    },
+    {
+      "id": 2920,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT AVG(Water_Consumption) AS Average_Water_Consumption\nFROM Household_Water_Usage\nWHERE City = 'Mumbai' AND Year IN (2018, 2019);",
+      "latencyMs": 1104,
+      "promptTokens": 110,
+      "completionTokens": 283
+    },
+    {
+      "id": 2979,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT h.Continent, h.CO2EmissionsReduction AS MaxReduction, COUNT(*) AS NumberOfHotels\nFROM Hotels h\nJOIN (\n    SELECT Continent, MAX(CO2EmissionsReduction) AS MaxReduction\n    FROM Hotels\n    GROUP BY Continent\n) m\nON h.Continent = m.Continent AND h.CO2EmissionsReduction = m.MaxReduction\nGROUP BY h.Continent, h.CO2EmissionsReduction;",
+      "latencyMs": 1905,
+      "promptTokens": 112,
+      "completionTokens": 484
+    },
+    {
+      "id": 3006,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT AVG(f.age) FROM fan_demographics f JOIN teams t ON f.favorite_team = t.name WHERE LOWER(f.gender) = 'female' AND t.sport = 'Soccer';",
+      "latencyMs": 1694,
+      "promptTokens": 138,
+      "completionTokens": 430
+    },
+    {
+      "id": 3019,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM sustainable_materials WHERE recycled_content_percentage > 85;",
+      "latencyMs": 393,
+      "promptTokens": 109,
+      "completionTokens": 76
+    },
+    {
+      "id": 3020,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT country, AVG(investment) AS average_investment\nFROM climate_finance\nWHERE region = 'South America' AND year = 2021\nGROUP BY country;",
+      "latencyMs": 1097,
+      "promptTokens": 103,
+      "completionTokens": 146
+    },
+    {
+      "id": 3079,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(annual_total) FROM (SELECT year, SUM(amount) AS annual_total FROM production WHERE country = 'Vietnam' AND year BETWEEN 2017 AND 2021 GROUP BY year);",
+      "latencyMs": 1720,
+      "promptTokens": 101,
+      "completionTokens": 428
+    },
+    {
+      "id": 3103,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM projects WHERE location = 'India' AND completion_date < '2017-01-01';",
+      "latencyMs": 1429,
+      "promptTokens": 91,
+      "completionTokens": 285
+    },
+    {
+      "id": 3107,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT Name FROM Satellites WHERE LaunchDate > '2010-12-31' AND CountryOfOrigin = 'India';",
+      "latencyMs": 1677,
+      "promptTokens": 108,
+      "completionTokens": 412
+    },
+    {
+      "id": 3142,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MIN(budget) AS min_budget\nFROM projects\nWHERE region = 'Africa'\n  AND LOWER(name) LIKE '%digital divide%';",
+      "latencyMs": 1146,
+      "promptTokens": 99,
+      "completionTokens": 240
+    },
+    {
+      "id": 3149,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT supplier\nFROM Suppliers\nWHERE product IN ('Free-Range Chicken', 'Grass-Fed Beef')\nGROUP BY supplier\nORDER BY SUM(quantity) DESC\nLIMIT 1;",
+      "latencyMs": 1754,
+      "promptTokens": 98,
+      "completionTokens": 425
+    },
+    {
+      "id": 3150,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(shipment_weight) FROM ShipmentWeights WHERE destination_continent = 'South America';",
+      "latencyMs": 364,
+      "promptTokens": 99,
+      "completionTokens": 26
+    },
+    {
+      "id": 3190,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT p.id, p.policyholder_name, SUM(c.claim_amount) AS total_claim_amount\nFROM policyholders p\nJOIN claims c ON p.id = c.policyholder_id\nWHERE p.state = 'Texas'\nGROUP BY p.id, p.policyholder_name\nORDER BY total_claim_amount DESC\nLIMIT 5;",
+      "latencyMs": 1691,
+      "promptTokens": 114,
+      "completionTokens": 425
+    },
+    {
+      "id": 3299,
+      "complexity": "set operations",
+      "match": false,
+      "sql": "SELECT 'school' AS type, name, needs_repair FROM schools WHERE country = 'Colombia'\nUNION ALL\nSELECT 'hospital' AS type, name, needs_repair FROM hospitals WHERE country = 'Colombia';",
+      "latencyMs": 1883,
+      "promptTokens": 128,
+      "completionTokens": 436
+    },
+    {
+      "id": 3300,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(DISTINCT donor) FROM community_development;",
+      "latencyMs": 344,
+      "promptTokens": 104,
+      "completionTokens": 52
+    },
+    {
+      "id": 3335,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(temperature) FROM space_temperatures;",
+      "latencyMs": 433,
+      "promptTokens": 85,
+      "completionTokens": 63
+    },
+    {
+      "id": 3351,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM young_farmer_program;",
+      "latencyMs": 259,
+      "promptTokens": 119,
+      "completionTokens": 17
+    },
+    {
+      "id": 3384,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT category, SUM(price * quantity) AS total_revenue, COUNT(*) AS total_events\nFROM revenue\nGROUP BY category;",
+      "latencyMs": 1778,
+      "promptTokens": 108,
+      "completionTokens": 414
+    },
+    {
+      "id": 3393,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT AVG(generation) FROM hydro_power WHERE country IN ('Norway', 'Sweden');",
+      "latencyMs": 833,
+      "promptTokens": 89,
+      "completionTokens": 174
+    },
+    {
+      "id": 3484,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT Department,\n       ROUND(100.0 * SUM(CASE WHEN RaceEthnicity NOT IN ('White', 'Asian') THEN 1 ELSE 0 END) / COUNT(*), 2) AS UnderrepresentedPercentage\nFROM Employees\nGROUP BY Department;",
+      "latencyMs": 2345,
+      "promptTokens": 99,
+      "completionTokens": 440
+    },
+    {
+      "id": 3501,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(cost) FROM Projects WHERE state IN ('New York', 'Texas');",
+      "latencyMs": 1286,
+      "promptTokens": 93,
+      "completionTokens": 167
+    },
+    {
+      "id": 3502,
+      "complexity": "multiple_joins",
+      "match": false,
+      "sql": "SELECT\n  (SELECT SUM(d.num_tourists)\n   FROM destinations_2021 d\n   JOIN eco_destinations e ON d.destination = e.destination) AS tourists_2021,\n  (SELECT SUM(d.num_tourists)\n   FROM destinations_2022 d\n   JOIN eco_destinations e ON d.destination = e.destination) AS tourists_2022;",
+      "latencyMs": 1842,
+      "promptTokens": 136,
+      "completionTokens": 468
+    },
+    {
+      "id": 3543,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT AVG(yield / acrate) FROM crops WHERE region = 'Pacific' AND year = 2021;",
+      "latencyMs": 1032,
+      "promptTokens": 112,
+      "completionTokens": 198
+    },
+    {
+      "id": 3545,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT MIN(min_depth) FROM submersible_dives WHERE region = 'Pacific Ocean';",
+      "latencyMs": 1395,
+      "promptTokens": 114,
+      "completionTokens": 312
+    },
+    {
+      "id": 3553,
+      "complexity": "subqueries",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM patients WHERE diagnosis = 'hypertension' AND age > 65;",
+      "latencyMs": 1863,
+      "promptTokens": 121,
+      "completionTokens": 404
+    },
+    {
+      "id": 3578,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT MAX(number_of_whales) FROM WhaleSightings;",
+      "latencyMs": 1079,
+      "promptTokens": 97,
+      "completionTokens": 243
+    },
+    {
+      "id": 3592,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(data_usage_gb) FROM mobile_subscribers WHERE city = 'Dallas';",
+      "latencyMs": 449,
+      "promptTokens": 105,
+      "completionTokens": 88
+    },
+    {
+      "id": 3630,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "WITH counts AS (\n  SELECT industry, COUNT(*) AS cnt\n  FROM Company\n  WHERE founding_year = :year\n  GROUP BY industry\n)\nSELECT industry\nFROM counts\nWHERE cnt = (SELECT MIN(cnt) FROM counts);",
+      "latencyMs": 1842,
+      "promptTokens": 96,
+      "completionTokens": 434
+    },
+    {
+      "id": 3710,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT w.WorkoutName FROM Workouts w JOIN Members m ON 1=0 WHERE w.Category = 'Strength' AND m.Age >= 30;",
+      "latencyMs": 1989,
+      "promptTokens": 115,
+      "completionTokens": 420
+    },
+    {
+      "id": 3763,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT success_rate FROM crispr WHERE gene_name = 'XYZ';",
+      "latencyMs": 915,
+      "promptTokens": 97,
+      "completionTokens": 208
+    },
+    {
+      "id": 3767,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM TourismCertifications WHERE country = 'Brazil';",
+      "latencyMs": 905,
+      "promptTokens": 97,
+      "completionTokens": 160
+    },
+    {
+      "id": 3837,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT teacher_id, name, hire_date, subject\nFROM teachers\nWHERE subject = 'Computer Science'\nORDER BY hire_date;",
+      "latencyMs": 2134,
+      "promptTokens": 100,
+      "completionTokens": 412
+    },
+    {
+      "id": 3844,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(goals_scored) FROM goals WHERE team = 'Montreal Canadiens';",
+      "latencyMs": 673,
+      "promptTokens": 105,
+      "completionTokens": 149
+    },
+    {
+      "id": 3847,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT continent, COUNT(*) AS ethical_brand_count\nFROM fashion_brands\nWHERE ethical_practices = 1\nGROUP BY continent;",
+      "latencyMs": 915,
+      "promptTokens": 95,
+      "completionTokens": 212
+    },
+    {
+      "id": 3898,
+      "complexity": "window functions",
+      "match": true,
+      "sql": "SELECT Name, ManufacturingDate, Country, DurationInSpace\nFROM Spacecraft\nORDER BY DurationInSpace DESC\nLIMIT 1;",
+      "latencyMs": 738,
+      "promptTokens": 106,
+      "completionTokens": 157
+    },
+    {
+      "id": 3902,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT SUM(t.quantity * t.price) AS total_revenue\nFROM tickets t\nJOIN games g ON t.game_id = g.game_id\nWHERE g.team = 'soccer'\n  AND g.location IN ('London', 'Paris');",
+      "latencyMs": 1953,
+      "promptTokens": 128,
+      "completionTokens": 437
+    },
+    {
+      "id": 3928,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(price) FROM products;",
+      "latencyMs": 357,
+      "promptTokens": 90,
+      "completionTokens": 48
+    },
+    {
+      "id": 3937,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MIN(alert_date) FROM fraud_alerts;",
+      "latencyMs": 1525,
+      "promptTokens": 94,
+      "completionTokens": 99
+    },
+    {
+      "id": 3942,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(hat_tricks) FROM (\n  SELECT home_team_id AS team_id, SUM(home_team_player_hat_tricks) AS hat_tricks\n  FROM german_matches\n  GROUP BY home_team_id\n  UNION ALL\n  SELECT away_team_id AS team_id, SUM(away_team_player_hat_tricks) AS hat_tricks\n  FROM german_matches\n  GROUP BY away_team_id\n);",
+      "latencyMs": 1918,
+      "promptTokens": 140,
+      "completionTokens": 480
+    },
+    {
+      "id": 3964,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(value) FROM military_sales;",
+      "latencyMs": 597,
+      "promptTokens": 90,
+      "completionTokens": 77
+    },
+    {
+      "id": 3997,
+      "complexity": "window functions",
+      "match": false,
+      "sql": "SELECT individual_id, COUNT(*) AS event_count\nFROM event_attendance\nWHERE event_year = 2021\nGROUP BY individual_id;",
+      "latencyMs": 769,
+      "promptTokens": 92,
+      "completionTokens": 144
+    },
+    {
+      "id": 4001,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT MAX(c.billing_amount)\nFROM cases c\nJOIN attorneys a ON c.attorney_id = a.attorney_id\nWHERE a.state = 'NY'\n  AND a.win_rate > 80;",
+      "latencyMs": 1730,
+      "promptTokens": 145,
+      "completionTokens": 431
+    },
+    {
+      "id": 4012,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(avg_attendance) FROM concerts WHERE genre = 'Jazz';",
+      "latencyMs": 271,
+      "promptTokens": 91,
+      "completionTokens": 23
+    },
+    {
+      "id": 4022,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(capacity) FROM windfarm WHERE country IN ('Germany', 'France');",
+      "latencyMs": 482,
+      "promptTokens": 99,
+      "completionTokens": 95
+    },
+    {
+      "id": 4036,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(amount) FROM donations WHERE donor = 'Aisha' AND strftime('%Y', donation_date) = '2021';",
+      "latencyMs": 1024,
+      "promptTokens": 107,
+      "completionTokens": 191
+    },
+    {
+      "id": 4043,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT name, area_sqm FROM parks WHERE state = 'New York';",
+      "latencyMs": 1648,
+      "promptTokens": 98,
+      "completionTokens": 401
+    },
+    {
+      "id": 4048,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(number) FROM mental_health_parity_violations WHERE state IN ('Alabama', 'Arkansas', 'Florida', 'Georgia', 'Kentucky', 'Louisiana', 'Mississippi', 'North Carolina', 'South Carolina', 'Tennessee', 'Texas', 'Virginia', 'West Virginia');",
+      "latencyMs": 1948,
+      "promptTokens": 101,
+      "completionTokens": 451
+    },
+    {
+      "id": 4049,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT city, COUNT(*) AS num_cultural_heritage_sites\nFROM asian_sites\nWHERE city IN ('Tokyo', 'Seoul')\n  AND type = 'Cultural Heritage'\nGROUP BY city;",
+      "latencyMs": 1823,
+      "promptTokens": 99,
+      "completionTokens": 429
+    },
+    {
+      "id": 4053,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM UNESCO_SITES WHERE region = 'Oceania';",
+      "latencyMs": 475,
+      "promptTokens": 98,
+      "completionTokens": 78
+    },
+    {
+      "id": 4054,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT AVG(age) FROM patients WHERE improvement = 'Improved';",
+      "latencyMs": 739,
+      "promptTokens": 88,
+      "completionTokens": 148
+    },
+    {
+      "id": 4058,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(revenue) FROM sustainable_tourism WHERE year = 2022 AND country IN ('New Zealand', 'Canada');",
+      "latencyMs": 541,
+      "promptTokens": 98,
+      "completionTokens": 106
+    },
+    {
+      "id": 4060,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT species, AVG(depth) AS average_depth\nFROM underwater_species\nWHERE ocean IN ('Indian', 'Pacific')\nGROUP BY species;",
+      "latencyMs": 1483,
+      "promptTokens": 91,
+      "completionTokens": 259
+    },
+    {
+      "id": 4073,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT DISTINCT ProgramName FROM ProgramDonations;",
+      "latencyMs": 1815,
+      "promptTokens": 135,
+      "completionTokens": 396
+    },
+    {
+      "id": 4083,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT element FROM production WHERE year = 2019 ORDER BY quantity ASC LIMIT 1;",
+      "latencyMs": 719,
+      "promptTokens": 87,
+      "completionTokens": 127
+    },
+    {
+      "id": 4112,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(emissions) FROM factories WHERE location = 'California';",
+      "latencyMs": 221,
+      "promptTokens": 89,
+      "completionTokens": 20
+    },
+    {
+      "id": 4116,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(LifeExpectancy) FROM Countries WHERE Continent = 'Africa';",
+      "latencyMs": 257,
+      "promptTokens": 87,
+      "completionTokens": 21
+    },
+    {
+      "id": 4126,
+      "complexity": "window functions",
+      "match": false,
+      "sql": "SELECT name, AVG(crime_count * 1.0 / population) AS avg_crime_rate_per_capita\nFROM neighborhoods\nGROUP BY name;",
+      "latencyMs": 1771,
+      "promptTokens": 89,
+      "completionTokens": 419
+    },
+    {
+      "id": 4129,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT * FROM defense_diplomacy WHERE year BETWEEN 2005 AND 2010 AND ((country1 = 'China' AND country2 = 'India') OR (country1 = 'India' AND country2 = 'China'));",
+      "latencyMs": 952,
+      "promptTokens": 114,
+      "completionTokens": 242
+    },
+    {
+      "id": 4138,
+      "complexity": "window functions",
+      "match": false,
+      "sql": "SELECT COUNT(*) FROM lifelong_learning WHERE student_id = 2;",
+      "latencyMs": 1737,
+      "promptTokens": 98,
+      "completionTokens": 400
+    },
+    {
+      "id": 4172,
+      "complexity": "subqueries",
+      "match": true,
+      "sql": "SELECT AVG(word_count)\nFROM (\n    SELECT a.id, COUNT(w.id) AS word_count\n    FROM articles a\n    LEFT JOIN words w ON w.article_id = a.id\n    WHERE a.newspaper = 'The Wall Street Journal'\n      AND a.category = 'Business'\n    GROUP BY a.id\n);",
+      "latencyMs": 1385,
+      "promptTokens": 122,
+      "completionTokens": 319
+    },
+    {
+      "id": 4210,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT Percentage FROM Health_Insurance WHERE Country = 'United States';",
+      "latencyMs": 245,
+      "promptTokens": 94,
+      "completionTokens": 18
+    },
+    {
+      "id": 4211,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM startups WHERE industry = 'Transportation' AND founder_community = 'Underrepresented';",
+      "latencyMs": 827,
+      "promptTokens": 93,
+      "completionTokens": 170
+    },
+    {
+      "id": 4259,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM attractions WHERE country = 'Japan' AND wheelchair_accessibility > 4;",
+      "latencyMs": 236,
+      "promptTokens": 98,
+      "completionTokens": 24
+    },
+    {
+      "id": 4261,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(speed_limit) FROM maritime_laws WHERE region = 'Bering Sea';",
+      "latencyMs": 580,
+      "promptTokens": 97,
+      "completionTokens": 123
+    },
+    {
+      "id": 4271,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT region, AVG(data_usage) FROM mobile_subscribers GROUP BY region;",
+      "latencyMs": 1195,
+      "promptTokens": 95,
+      "completionTokens": 22
+    },
+    {
+      "id": 4276,
+      "complexity": "subqueries",
+      "match": true,
+      "sql": "SELECT name FROM oceans ORDER BY underwater_volcanoes DESC LIMIT 1;",
+      "latencyMs": 545,
+      "promptTokens": 85,
+      "completionTokens": 22
+    },
+    {
+      "id": 4286,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT country, COUNT(*) AS total_missions FROM SpaceMissions GROUP BY country;",
+      "latencyMs": 1073,
+      "promptTokens": 102,
+      "completionTokens": 55
+    },
+    {
+      "id": 4290,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM security_incidents WHERE strftime('%Y', incident_date) = '2022';",
+      "latencyMs": 579,
+      "promptTokens": 90,
+      "completionTokens": 119
+    },
+    {
+      "id": 4310,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT campaign_name\nFROM climate_communication_campaigns\nWHERE region = 'Asia'\n  AND focus = 'mitigation'\n  AND budget > 1000000;",
+      "latencyMs": 1310,
+      "promptTokens": 120,
+      "completionTokens": 303
+    },
+    {
+      "id": 4382,
+      "complexity": "subqueries",
+      "match": false,
+      "sql": "SELECT event_name, event_date FROM Events ORDER BY attendee_count DESC LIMIT 1;",
+      "latencyMs": 247,
+      "promptTokens": 92,
+      "completionTokens": 24
+    },
+    {
+      "id": 4400,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT title, streams FROM songs WHERE genre = 'Hip-Hop' AND year = 2021 ORDER BY streams DESC LIMIT 3;",
+      "latencyMs": 255,
+      "promptTokens": 103,
+      "completionTokens": 35
+    },
+    {
+      "id": 4404,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT country, SUM(energy_consumption) AS total_energy_consumption\nFROM energy_consumption\nWHERE year = 2020\nGROUP BY country;",
+      "latencyMs": 619,
+      "promptTokens": 104,
+      "completionTokens": 111
+    },
+    {
+      "id": 4422,
+      "complexity": "basic SQL",
+      "match": false,
+      "error": "near \"The\": syntax error",
+      "sql": "The question asks \"How many artworks were created by artists from France?\" The schema only has Artists table, no Artworks table. So we cannot count artworks. But maybe the intended query is to count artists from France? The phrase \"artworks were created by artists\" implies join. But no Artworks table. Could be a trick: no such table, so query would fail. But we need exactly one SQLite SELECT query. Could we write a query that returns 0? That would be misleading. Could we write a query that counts artists from France? That would answer a different question. The instruction says \"Given a database",
+      "latencyMs": 2249,
+      "promptTokens": 87,
+      "completionTokens": 512
+    },
+    {
+      "id": 4443,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(Amount) FROM Budget WHERE City = 'CityC';",
+      "latencyMs": 263,
+      "promptTokens": 93,
+      "completionTokens": 19
+    },
+    {
+      "id": 4484,
+      "complexity": "multiple_joins",
+      "match": false,
+      "sql": "SELECT COUNT(DISTINCT i.client_id) FROM investments i JOIN funds f ON i.fund_id = f.fund_id WHERE f.fund_name = 'Global Fund';",
+      "latencyMs": 820,
+      "promptTokens": 128,
+      "completionTokens": 162
+    },
+    {
+      "id": 4490,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT region,\n       (SUM(CASE WHEN LOWER(category) = 'education' THEN amount ELSE 0 END) * 100.0 / NULLIF(SUM(amount), 0)) AS education_percentage\nFROM humanitarian_aid\nGROUP BY region;",
+      "latencyMs": 1542,
+      "promptTokens": 96,
+      "completionTokens": 328
+    },
+    {
+      "id": 4549,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT branch, AVG(personnel) AS average_personnel\nFROM military_personnel\nWHERE year >= (SELECT MAX(year) - 4 FROM military_personnel)\nGROUP BY branch;",
+      "latencyMs": 1245,
+      "promptTokens": 103,
+      "completionTokens": 263
+    },
+    {
+      "id": 4553,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM rural_clinic_3 WHERE LOWER(gender) = 'female';",
+      "latencyMs": 816,
+      "promptTokens": 100,
+      "completionTokens": 178
+    },
+    {
+      "id": 4556,
+      "complexity": "multiple_joins",
+      "match": false,
+      "sql": "SELECT artists.name, COUNT(*) AS song_count\nFROM artists\nJOIN songs_artists ON artists.id = songs_artists.artist_id\nJOIN songs ON songs_artists.song_id = songs.id\nWHERE songs.genre = 'country'\nGROUP BY artists.id, artists.name\nORDER BY song_count DESC\nLIMIT 2;",
+      "latencyMs": 1191,
+      "promptTokens": 119,
+      "completionTokens": 310
+    },
+    {
+      "id": 4561,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT state, SUM(num_wells) AS num_wells FROM state_wells GROUP BY state;",
+      "latencyMs": 1661,
+      "promptTokens": 88,
+      "completionTokens": 409
+    },
+    {
+      "id": 4582,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT MAX(pollution_level) FROM pollution_monitoring_atlantic;",
+      "latencyMs": 617,
+      "promptTokens": 92,
+      "completionTokens": 118
+    },
+    {
+      "id": 4598,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT SUM(quantity) FROM europium_production WHERE region = 'Oceania';",
+      "latencyMs": 281,
+      "promptTokens": 92,
+      "completionTokens": 23
+    },
+    {
+      "id": 4629,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM smart_contract_deployments WHERE developer_name = 'Hayden Adams';",
+      "latencyMs": 463,
+      "promptTokens": 104,
+      "completionTokens": 87
+    },
+    {
+      "id": 4672,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) AS mine_count, SUM(capacity) AS total_capacity FROM terbium_mines WHERE country = 'China';",
+      "latencyMs": 1145,
+      "promptTokens": 99,
+      "completionTokens": 253
+    },
+    {
+      "id": 4681,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT PolicyState, COUNT(*) AS total_policies\nFROM Policies\nGROUP BY PolicyState;",
+      "latencyMs": 1004,
+      "promptTokens": 91,
+      "completionTokens": 80
+    },
+    {
+      "id": 4683,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT DISTINCT make, model FROM japan_ev_sales WHERE year >= 2019;",
+      "latencyMs": 754,
+      "promptTokens": 102,
+      "completionTokens": 176
+    },
+    {
+      "id": 4691,
+      "complexity": "subqueries",
+      "match": true,
+      "sql": "SELECT cd.initiative_name\nFROM community_development cd\nWHERE NOT EXISTS (\n  SELECT 1\n  FROM rural_innovations ri\n  WHERE ri.initiation_year = cd.initiation_year\n);",
+      "latencyMs": 1274,
+      "promptTokens": 138,
+      "completionTokens": 313
+    },
+    {
+      "id": 4703,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT name FROM urban_agriculture_initiatives WHERE location = 'Montreal' AND area_ha > 0.5;",
+      "latencyMs": 261,
+      "promptTokens": 105,
+      "completionTokens": 31
+    },
+    {
+      "id": 4771,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT location, SUM(population) AS total_animals\nFROM animal_population\nGROUP BY location;",
+      "latencyMs": 646,
+      "promptTokens": 117,
+      "completionTokens": 141
+    },
+    {
+      "id": 4784,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(violation_count) FROM regulatory_violations WHERE platform IN ('Coinbase', 'Huobi');",
+      "latencyMs": 1462,
+      "promptTokens": 92,
+      "completionTokens": 152
+    },
+    {
+      "id": 4785,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT species, SUM(carbon) AS total_carbon\nFROM forests_carbon_seq\nWHERE type = 'tropical dry forests'\nGROUP BY species\nORDER BY total_carbon DESC\nLIMIT 3;",
+      "latencyMs": 1975,
+      "promptTokens": 101,
+      "completionTokens": 429
+    },
+    {
+      "id": 4795,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT name, production_date FROM machines WHERE category = 'circular_economy' AND production_date > '2015-12-31';",
+      "latencyMs": 656,
+      "promptTokens": 112,
+      "completionTokens": 34
+    },
+    {
+      "id": 4798,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(esg_score) FROM company_scores WHERE company = 'Green Horizons' AND year = 2021 AND quarter IN (3, 4);",
+      "latencyMs": 595,
+      "promptTokens": 107,
+      "completionTokens": 134
+    },
+    {
+      "id": 4817,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(DISTINCT business_id) FROM sustainable_tourism WHERE year = 2021 AND benefited = 1;",
+      "latencyMs": 1076,
+      "promptTokens": 94,
+      "completionTokens": 244
+    },
+    {
+      "id": 4820,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(retreats) FROM GlacierRetreats WHERE location = 'Norway' AND year BETWEEN 2015 AND 2020;",
+      "latencyMs": 614,
+      "promptTokens": 97,
+      "completionTokens": 116
+    },
+    {
+      "id": 4829,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(Playtime) FROM Player_Details WHERE Game_Name = 'Cybernetic Shift';",
+      "latencyMs": 371,
+      "promptTokens": 111,
+      "completionTokens": 26
+    },
+    {
+      "id": 4846,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT job_category, AVG(weekly_wage) FROM labor_stats GROUP BY job_category;",
+      "latencyMs": 242,
+      "promptTokens": 99,
+      "completionTokens": 24
+    },
+    {
+      "id": 4847,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) AS landfill_count, SUM(capacity_cubic_yards) AS total_capacity\nFROM landfills\nWHERE location = 'Texas';",
+      "latencyMs": 1715,
+      "promptTokens": 99,
+      "completionTokens": 415
+    },
+    {
+      "id": 4854,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(amount) FROM communication_investments WHERE region IN ('Africa', 'Oceania') AND year BETWEEN 2010 AND 2020;",
+      "latencyMs": 630,
+      "promptTokens": 100,
+      "completionTokens": 123
+    },
+    {
+      "id": 4869,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT v.* FROM vessels v WHERE NOT EXISTS (SELECT 1 FROM cargo c WHERE c.vessel_id = v.id AND c.weight > ?);",
+      "latencyMs": 1197,
+      "promptTokens": 106,
+      "completionTokens": 256
+    },
+    {
+      "id": 4873,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT branch, SUM(personnel_count) AS total_personnel\nFROM MilitaryPersonnel\nGROUP BY branch;",
+      "latencyMs": 590,
+      "promptTokens": 99,
+      "completionTokens": 116
+    },
+    {
+      "id": 4922,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT team_id, SUM(total_sales) AS total_home_sales\nFROM team_performance\nWHERE home_game = 1 AND total_sales > 0\nGROUP BY team_id;",
+      "latencyMs": 1714,
+      "promptTokens": 106,
+      "completionTokens": 426
+    },
+    {
+      "id": 4929,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT v.id, v.name\nFROM Visitor v\nJOIN Visitor_Exhibition ve ON v.id = ve.visitor_id\nGROUP BY v.id, v.name\nHAVING COUNT(DISTINCT ve.exhibition_id) > 1;",
+      "latencyMs": 1232,
+      "promptTokens": 97,
+      "completionTokens": 253
+    },
+    {
+      "id": 4959,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT MAX(Value) FROM Investments WHERE Market = 'US Stock Market';",
+      "latencyMs": 2032,
+      "promptTokens": 95,
+      "completionTokens": 20
+    },
+    {
+      "id": 4977,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT SUM(sessions) AS total_sessions FROM financial_capability_training WHERE country = 'Germany' AND quarter = 1 AND year = 2022;",
+      "latencyMs": 976,
+      "promptTokens": 105,
+      "completionTokens": 237
+    },
+    {
+      "id": 4980,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT AVG(energy_output) FROM renewable_energy WHERE energy_type = 'wind';",
+      "latencyMs": 232,
+      "promptTokens": 95,
+      "completionTokens": 23
+    },
+    {
+      "id": 4983,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(revenue) FROM sustainable_tours WHERE country = 'Japan';",
+      "latencyMs": 452,
+      "promptTokens": 93,
+      "completionTokens": 78
+    },
+    {
+      "id": 4993,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM deep_sea_expeditions WHERE location LIKE '%Pacific%';",
+      "latencyMs": 1597,
+      "promptTokens": 97,
+      "completionTokens": 401
+    },
+    {
+      "id": 5002,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(cost) FROM SpacecraftManuf WHERE year = 2023 AND company IN ('Cosmic Corp.', 'Starlight Inc.');",
+      "latencyMs": 921,
+      "promptTokens": 102,
+      "completionTokens": 161
+    },
+    {
+      "id": 5015,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(rate) FROM recycling_rates;",
+      "latencyMs": 502,
+      "promptTokens": 86,
+      "completionTokens": 61
+    },
+    {
+      "id": 5031,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT Disability_Type, COUNT(DISTINCT Student_ID) AS student_count\nFROM Disability_Accommodations\nGROUP BY Disability_Type;",
+      "latencyMs": 551,
+      "promptTokens": 103,
+      "completionTokens": 117
+    },
+    {
+      "id": 5096,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(generation_quantity) FROM waste_generation WHERE city = 'Rio de Janeiro' AND waste_type = 'Metal' AND strftime('%Y', generation_date) = '2021';",
+      "latencyMs": 501,
+      "promptTokens": 103,
+      "completionTokens": 45
+    },
+    {
+      "id": 5099,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(usage) AS max_daily_water_usage FROM max_daily_water_usage WHERE year = 2021 AND month = 10 AND LOWER(sector) = 'industrial';",
+      "latencyMs": 1040,
+      "promptTokens": 109,
+      "completionTokens": 233
+    },
+    {
+      "id": 5119,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT SUM(p.price * s.quantity) AS total_revenue\nFROM product p\nJOIN sales s ON p.product_id = s.product_id\nWHERE p.cruelty_free = 0;",
+      "latencyMs": 1656,
+      "promptTokens": 113,
+      "completionTokens": 310
+    },
+    {
+      "id": 5123,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT country, COUNT(*) AS total_events\nFROM defense_diplomacy_4\nGROUP BY country\nORDER BY total_events DESC;",
+      "latencyMs": 898,
+      "promptTokens": 109,
+      "completionTokens": 198
+    },
+    {
+      "id": 5184,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(quantity) FROM Global_Sales WHERE year = 2021 AND LOWER(vehicle_type) IN ('electric', 'hybrid');",
+      "latencyMs": 644,
+      "promptTokens": 96,
+      "completionTokens": 152
+    },
+    {
+      "id": 5192,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT DISTINCT e.FirstName, e.LastName\nFROM Employees e\nJOIN Projects p ON e.Department = p.Department\nWHERE p.ProjectName = 'Wind Turbines'\n  AND e.Position LIKE '%Engineer%';",
+      "latencyMs": 1768,
+      "promptTokens": 130,
+      "completionTokens": 436
+    },
+    {
+      "id": 5225,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT MIN(CAST(mu.co2_emissions AS REAL) / mu.quantity) AS min_co2_per_unit\nFROM brands b\nJOIN material_usage mu ON b.brand_id = mu.brand_id\nWHERE b.country = 'Spain'\n  AND mu.material_type = 'sustainable'\n  AND mu.quantity > 0;",
+      "latencyMs": 1308,
+      "promptTokens": 118,
+      "completionTokens": 315
+    },
+    {
+      "id": 5255,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MIN(max_speed), MAX(max_speed) FROM spacecraft WHERE launch_company = 'SpaceX';",
+      "latencyMs": 1093,
+      "promptTokens": 103,
+      "completionTokens": 79
+    },
+    {
+      "id": 5269,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(recycling_rate) FROM recycling_rates WHERE state = 'California' AND year = 2020;",
+      "latencyMs": 283,
+      "promptTokens": 98,
+      "completionTokens": 29
+    },
+    {
+      "id": 5286,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT SUM(population) FROM wildlife WHERE year = 2020;",
+      "latencyMs": 284,
+      "promptTokens": 93,
+      "completionTokens": 20
+    },
+    {
+      "id": 5333,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(price), MIN(size_sqft) FROM property WHERE has_inclusive_policy = TRUE;",
+      "latencyMs": 2207,
+      "promptTokens": 115,
+      "completionTokens": 408
+    },
+    {
+      "id": 5341,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT industry, union_status, SUM(num_employees) AS total_employees\nFROM employees\nGROUP BY industry, union_status;",
+      "latencyMs": 1852,
+      "promptTokens": 104,
+      "completionTokens": 412
+    },
+    {
+      "id": 5351,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(ph) FROM saltwater_aquaculture WHERE location = 'North Atlantic';",
+      "latencyMs": 709,
+      "promptTokens": 99,
+      "completionTokens": 140
+    },
+    {
+      "id": 5355,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT AVG(price / quantity) AS avg_price_per_gram\nFROM dispensary\nWHERE name = 'Dispensary X'\n  AND product LIKE '%concentrate%'\n  AND quantity > 0;",
+      "latencyMs": 1366,
+      "promptTokens": 102,
+      "completionTokens": 275
+    },
+    {
+      "id": 5377,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT MIN(shipments.shipment_weight) FROM shipments JOIN ports ON shipments.port_id = ports.port_id WHERE ports.port_name = 'Port of Tokyo' AND strftime('%Y', shipments.ship_date) = '2018';",
+      "latencyMs": 586,
+      "promptTokens": 117,
+      "completionTokens": 126
+    },
+    {
+      "id": 5378,
+      "complexity": "window functions",
+      "match": false,
+      "sql": "SELECT program, energy_savings,\n       AVG(energy_savings) OVER (\n           PARTITION BY program\n           ORDER BY rowid\n           ROWS BETWEEN 2 PRECEDING AND CURRENT ROW\n       ) AS moving_avg\nFROM energy_efficiency;",
+      "latencyMs": 1791,
+      "promptTokens": 104,
+      "completionTokens": 444
+    },
+    {
+      "id": 5405,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT market_share FROM market_share_2 WHERE hotel_chain = 'Hotel Chain C' AND region = 'South America';",
+      "latencyMs": 551,
+      "promptTokens": 101,
+      "completionTokens": 108
+    },
+    {
+      "id": 5421,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT SUM(Donations.amount)\nFROM Donations\nJOIN Donors ON Donations.donor_id = Donors.donor_id\nWHERE Donors.country = 'Brazil'\n  AND Donations.cause = 'climate change mitigation';",
+      "latencyMs": 783,
+      "promptTokens": 112,
+      "completionTokens": 162
+    },
+    {
+      "id": 5423,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT MIN(TotalHoursPlayed) AS MinPlaytime, MAX(TotalHoursPlayed) AS MaxPlaytime\nFROM Players, GameDesign\nWHERE GameDesign.Multiplayer = 1\nORDER BY COUNT(Players.PlayerID) DESC;",
+      "latencyMs": 1940,
+      "promptTokens": 130,
+      "completionTokens": 438
+    },
+    {
+      "id": 5441,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT COALESCE(SUM(amount), 0) AS total_funding\nFROM Funding\nWHERE LOWER(program) LIKE '%cultural%'\n  AND (\n    LOWER(program) LIKE '%women%'\n    OR LOWER(program) LIKE '%non-binary%'\n    OR LOWER(program) LIKE '%nonbinary%'\n  );",
+      "latencyMs": 1724,
+      "promptTokens": 88,
+      "completionTokens": 460
+    },
+    {
+      "id": 5454,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT c.name AS country, COALESCE(SUM(f.hectares), 0) AS total_hectares\nFROM Countries c\nLEFT JOIN Forests f ON f.country = c.name\nGROUP BY c.name;",
+      "latencyMs": 2491,
+      "promptTokens": 116,
+      "completionTokens": 433
+    },
+    {
+      "id": 5464,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT ArtistName, SUM(SalesAmount) AS TotalRevenue\nFROM MusicSales\nGROUP BY ArtistName\nORDER BY TotalRevenue DESC\nLIMIT 3;",
+      "latencyMs": 1277,
+      "promptTokens": 106,
+      "completionTokens": 271
+    },
+    {
+      "id": 5491,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT AVG(rating) FROM hotels WHERE country = 'United States' AND ai_services = 1;",
+      "latencyMs": 829,
+      "promptTokens": 106,
+      "completionTokens": 206
+    },
+    {
+      "id": 5514,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT MAX(property_price) FROM sustainable_communities;",
+      "latencyMs": 334,
+      "promptTokens": 90,
+      "completionTokens": 53
+    },
+    {
+      "id": 5529,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM accidents a JOIN vessels v ON a.vessel_id = v.id WHERE v.cargo_capacity > 5000;",
+      "latencyMs": 830,
+      "promptTokens": 109,
+      "completionTokens": 162
+    },
+    {
+      "id": 5560,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT name, budget FROM programs WHERE participants > 50;",
+      "latencyMs": 1723,
+      "promptTokens": 92,
+      "completionTokens": 398
+    },
+    {
+      "id": 5565,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT Country, AVG(Consumption) AS AvgConsumption FROM EnergyConsumptionPerCapita WHERE Year = 2021 GROUP BY Country;",
+      "latencyMs": 388,
+      "promptTokens": 97,
+      "completionTokens": 35
+    },
+    {
+      "id": 5581,
+      "complexity": "aggregation",
+      "match": false,
+      "sql": "SELECT program_id\nFROM programs\nWHERE program_year = 2019\nGROUP BY program_id\nORDER BY SUM(impact_score) DESC\nLIMIT 1;",
+      "latencyMs": 687,
+      "promptTokens": 90,
+      "completionTokens": 143
+    },
+    {
+      "id": 5594,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT service, COUNT(*) AS total_complaints FROM customer_complaints GROUP BY service;",
+      "latencyMs": 497,
+      "promptTokens": 97,
+      "completionTokens": 81
+    },
+    {
+      "id": 5602,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT AVG(total_spending) FROM gaming_facts WHERE country IN ('USA', 'Canada', 'Mexico');",
+      "latencyMs": 1895,
+      "promptTokens": 103,
+      "completionTokens": 409
+    },
+    {
+      "id": 5605,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT city, COUNT(*) AS total_properties\nFROM properties\nWHERE inclusive_policy = 1\nGROUP BY city;",
+      "latencyMs": 598,
+      "promptTokens": 108,
+      "completionTokens": 132
+    },
+    {
+      "id": 5607,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT p.name, s.name\nFROM products p\nJOIN suppliers s ON p.supplier_id = s.id\nWHERE s.name <> 'Green Cotton Inc.';",
+      "latencyMs": 944,
+      "promptTokens": 127,
+      "completionTokens": 201
+    },
+    {
+      "id": 5624,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT country, SUM(calories) AS total_calories\nFROM workouts\nGROUP BY country\nORDER BY total_calories DESC\nLIMIT 3;",
+      "latencyMs": 2079,
+      "promptTokens": 99,
+      "completionTokens": 110
+    },
+    {
+      "id": 5631,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT 100.0 * SUM(CASE WHEN attendee_age < 12 THEN 1 ELSE 0 END) / COUNT(*) AS percentage\nFROM AgeDistribution\nWHERE event_name = 'Family Day';",
+      "latencyMs": 3351,
+      "promptTokens": 106,
+      "completionTokens": 339
+    },
+    {
+      "id": 5654,
+      "complexity": "single join",
+      "match": false,
+      "sql": "SELECT s.name, AVG(l.progress) AS average_progress\nFROM schools s\nJOIN lifelong_learning l ON s.school_id = l.school_id\nGROUP BY s.school_id, s.name;",
+      "latencyMs": 690,
+      "promptTokens": 104,
+      "completionTokens": 139
+    },
+    {
+      "id": 5670,
+      "complexity": "multiple_joins",
+      "match": true,
+      "sql": "SELECT DISTINCT s.supplier_name\nFROM suppliers s\nJOIN ingredients i ON s.supplier_id = i.supplier_id\nJOIN restaurants r ON i.restaurant_id = r.restaurant_id\nWHERE r.rating = 'Organic';",
+      "latencyMs": 981,
+      "promptTokens": 134,
+      "completionTokens": 225
+    },
+    {
+      "id": 5691,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT Country, COUNT(*) AS player_count FROM Players GROUP BY Country ORDER BY player_count DESC LIMIT 3;",
+      "latencyMs": 593,
+      "promptTokens": 86,
+      "completionTokens": 111
+    },
+    {
+      "id": 5706,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT project_type, COUNT(*) AS project_count, SUM(budget) AS total_budget\nFROM explainable_ai_projects\nGROUP BY project_type\nORDER BY total_budget DESC;",
+      "latencyMs": 857,
+      "promptTokens": 113,
+      "completionTokens": 206
+    },
+    {
+      "id": 5713,
+      "complexity": "subqueries",
+      "match": true,
+      "sql": "SELECT COUNT(*) FROM Events WHERE num_attendees > (SELECT AVG(num_attendees) FROM Events);",
+      "latencyMs": 410,
+      "promptTokens": 103,
+      "completionTokens": 79
+    },
+    {
+      "id": 5725,
+      "complexity": "basic SQL",
+      "match": false,
+      "sql": "SELECT id, country, amount FROM Contributors ORDER BY amount DESC LIMIT 3;",
+      "latencyMs": 1626,
+      "promptTokens": 87,
+      "completionTokens": 403
+    },
+    {
+      "id": 5768,
+      "complexity": "basic SQL",
+      "match": false,
+      "error": "unrecognized token: \"'Ivory\"",
+      "sql": "SELECT COUNT(*) FROM game_designers WHERE country IN ('Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina Faso', 'Burundi', 'Cabo Verde', 'Cameroon', 'Central African Republic', 'Chad', 'Comoros', 'Congo', 'Democratic Republic of the Congo', 'Djibouti', 'Egypt', 'Equatorial Guinea', 'Eritrea', 'Eswatini', 'Ethiopia', 'Gabon', 'Gambia', 'Ghana', 'Guinea', 'Guinea-Bissau', 'Ivory",
+      "latencyMs": 2064,
+      "promptTokens": 105,
+      "completionTokens": 512
+    },
+    {
+      "id": 5785,
+      "complexity": "basic SQL",
+      "match": true,
+      "sql": "SELECT project_name, cost FROM creative_ai_projects ORDER BY cost DESC LIMIT 3;",
+      "latencyMs": 250,
+      "promptTokens": 93,
+      "completionTokens": 25
+    },
+    {
+      "id": 5829,
+      "complexity": "aggregation",
+      "match": true,
+      "sql": "SELECT state, SUM(length) AS total_length FROM Highways GROUP BY state;",
+      "latencyMs": 492,
+      "promptTokens": 96,
+      "completionTokens": 85
+    },
+    {
+      "id": 5845,
+      "complexity": "single join",
+      "match": true,
+      "sql": "SELECT p.gender, SUM(c.claim_amount) AS total_claim_amount\nFROM claims c\nJOIN policyholders p ON c.policyholder_id = p.id\nGROUP BY p.gender;",
+      "latencyMs": 584,
+      "promptTokens": 109,
+      "completionTokens": 59
+    }
+  ]
+}

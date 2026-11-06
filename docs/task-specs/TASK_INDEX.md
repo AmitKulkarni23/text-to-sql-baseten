@@ -22,11 +22,13 @@ Build the fixed held-out set and the scoring logic. Nothing calls a model yet.
 - [x] `eval/score.ts`: execution match. It runs gold and predicted SQL on a fresh in-memory DB built from the context and compares result sets as multisets (order-insensitive unless the gold has `ORDER BY`). Invalid SQL counts as a miss and records the error.
 - [x] Tests cover row order, duplicates, NULLs, int vs float, and invalid SQL.
 
-### TASK-003: Prompt and frontier baseline · depends on: 002 · ~$0.50 of Model APIs credits
+### ~~TASK-003: Prompt and frontier baseline · depends on: 002 · ~$0.50 of Model APIs credits~~
 
-- [ ] `backend/prompt.ts` with `PROMPT_VERSION`: system prompt ("Return only one SQLite query"), schema, question. SQL is extracted from the reply (strip code fences).
-- [ ] `eval/run.ts --model <slug> --base-url <url> --limit N` calls any OpenAI-compatible endpoint with concurrency 8 and writes `eval/results/<model>-<date>.json` (accuracy overall and by complexity, P50/P90 latency, tokens).
-- [ ] **Asks the user**, then runs the 300-example set against one large Model APIs model. This is the "frontier" number to beat. Logged in `docs/cost-log.md`.
+- [x] `backend/prompt.ts` with `PROMPT_VERSION`: system prompt ("Return only one SQLite query"), schema, question. SQL is extracted from the reply (strip code fences).
+- [x] `eval/run.ts --model <slug> --base-url <url> --limit N` calls any OpenAI-compatible endpoint with concurrency 8 and writes `eval/results/<model>-<date>.json` (accuracy overall and by complexity, P50/P90 latency, tokens).
+- [x] **Asks the user**, then runs the 300-example set against one large Model APIs model. This is the "frontier" number to beat. Logged in `docs/cost-log.md`.
+
+Result: DeepSeek-V4.1-Flash 67.0% (P50 952 ms, P90 1899 ms), $0.09. Schema only (CREATE statements) goes in the prompt; rows never do.
 
 ### TASK-004: Training config and smoke run · depends on: 003 · ~$1 to $2
 
